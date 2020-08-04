@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Camion {
 
-	private String catente;
+	private String patente;
 	private String marca;
 	private String modelo;
 	private Double kmRecorridos;
@@ -13,9 +13,9 @@ public class Camion {
 	private LocalDateTime fechaDeCompra;
 	
 	
-	public Camion(String catente, String marca, String modelo, Double kmRecorridos, Double costoHora, Double costoKm,
+	public Camion(String patente, String marca, String modelo, Double kmRecorridos, Double costoHora, Double costoKm,
 			LocalDateTime fechaDeCompra) {
-		this.catente = catente;
+		this.patente = patente;
 		this.marca = marca;
 		this.modelo = modelo;
 		this.kmRecorridos = kmRecorridos;
@@ -25,13 +25,18 @@ public class Camion {
 	}
 
 
-	public String getCatente() {
-		return catente;
+	public Camion() {
+		// TODO Auto-generated constructor stub
 	}
 
 
-	public void setCatente(String catente) {
-		this.catente = catente;
+	public String getPatente() {
+		return patente;
+	}
+
+
+	public void setPatente(String catente) {
+		this.patente = catente;
 	}
 
 

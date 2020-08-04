@@ -13,9 +13,12 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import frsf.isi.died.app.App;
+import frsf.isi.died.dao.CamionDao;
+import frsf.isi.died.dao.CamionDaoPostgreSql;
 
 public class CamionGui {
 
+	
 	public void pantallaPrincipalCamiones(App app) {
 		
 		JPanel panel = new JPanel(new GridBagLayout());
@@ -72,6 +75,8 @@ public class CamionGui {
 		modeloColumna.getColumn(4).setPreferredWidth(100);
 		modeloColumna.getColumn(5).setPreferredWidth(100);
 	
+		
+		
 		
 		return tablaCamiones;
 	}
