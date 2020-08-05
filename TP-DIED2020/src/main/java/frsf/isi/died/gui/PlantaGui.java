@@ -33,7 +33,10 @@ public class PlantaGui {
 
 	Integer valorId,telefono;
 	String nombre,direccion;
+	
 	public void pantallaPrincipalPlantas(App app) {
+		
+		app.activarMenu();
 		
 		JPanel panel=new JPanel(new GridBagLayout());
 		
@@ -151,60 +154,11 @@ public class PlantaGui {
 
 	}
 	
-	
-	private JTable dibujarTablaPlantas() {
-		
-		class MiModelo extends DefaultTableModel	{
-			private static final long serialVersionUID = 1L;
 
-		public boolean isCellEditable (int row, int column) {
-		       return false;
-		   }
-		}
-		
-		MiModelo modelo = new MiModelo();	
-		
-		
-		
-		modelo.addColumn("ID Planta");
-		modelo.addColumn("Nombre");
-		modelo.addColumn("Direccion");
-		modelo.addColumn("Telefono");
-	
-		
-		JTable tablaPlantas=new JTable(modelo);
-		TableRowSorter<TableModel> ordenador=new TableRowSorter<TableModel>(modelo);
-		tablaPlantas.setRowSorter(ordenador);
-		
-		TableColumnModel modeloColumna = tablaPlantas.getColumnModel();
-		modeloColumna.getColumn(0).setPreferredWidth(200);
-		modeloColumna.getColumn(1).setPreferredWidth(200);
-		modeloColumna.getColumn(2).setPreferredWidth(200);
-		modeloColumna.getColumn(3).setPreferredWidth(200);
-		
-		
-		
-		PlantaDao p = new PlantaDaoPostgreSql();
-		
-		List<Planta> plantas = p.buscarTodos();
-		
-		for(Planta unaPlanta : plantas) {
-			Object fila[]= new Object [4];
-			fila[0]=unaPlanta.getIdPlanta();
-			fila[1]=unaPlanta.getNombrePlanta();
-			fila[2]=unaPlanta.getDireccion();
-			fila[3]=unaPlanta.getTelefono();
-			
-			modelo.addRow(fila);
-		}
-		
-	
-		return tablaPlantas;
-	}
-	
 	
 	public void pantallaAgregarPlanta(App app) {
-	
+		app.desactivarMenu();
+		
 		JPanel panel=new JPanel(new GridBagLayout());
 		JLabel etiquetaId = new JLabel("ID: ");
 		JLabel etiquetaNombrePlanta=new JLabel("Nombre planta: ");
@@ -247,8 +201,6 @@ public class PlantaGui {
 	
 		});
 		
-		
-		
 		app.gbc.gridx=0;
 		app.gbc.gridy=0;
 		app.gbc.gridwidth=1;
@@ -259,8 +211,6 @@ public class PlantaGui {
 		app.gbc.gridwidth=3;
 		panel.add(ingresarId,app.gbc);
 		
-		//app.gbc.weightx=0.1;
-		//app.gbc.weighty=0.1;
 		app.gbc.gridx=0;
 		app.gbc.gridy=1;
 		app.gbc.gridwidth=1;
@@ -308,6 +258,7 @@ public class PlantaGui {
 	
 	
 	public void pantallaModificarPlanta(App app,Integer valorId,String nombre,String direccion,Integer telefono) {
+		app.desactivarMenu();
 		
 		JPanel panel=new JPanel(new GridBagLayout());
 		JLabel etiquetaId = new JLabel("ID: ");
@@ -421,6 +372,53 @@ public class PlantaGui {
 	}
 	
 	
+	
+	private JTable dibujarTablaPlantas() {
+		
+		class MiModelo extends DefaultTableModel	{
+			private static final long serialVersionUID = 1L;
+
+		public boolean isCellEditable (int row, int column) {
+		       return false;
+		   }
+		}
+		
+		MiModelo modelo = new MiModelo();	
+		
+		modelo.addColumn("ID Planta");
+		modelo.addColumn("Nombre");
+		modelo.addColumn("Direccion");
+		modelo.addColumn("Telefono");
+	
+		JTable tablaPlantas=new JTable(modelo);
+		TableRowSorter<TableModel> ordenador=new TableRowSorter<TableModel>(modelo);
+		tablaPlantas.setRowSorter(ordenador);
+		
+		TableColumnModel modeloColumna = tablaPlantas.getColumnModel();
+		modeloColumna.getColumn(0).setPreferredWidth(200);
+		modeloColumna.getColumn(1).setPreferredWidth(200);
+		modeloColumna.getColumn(2).setPreferredWidth(200);
+		modeloColumna.getColumn(3).setPreferredWidth(200);
+		
+		
+		
+		PlantaDao p = new PlantaDaoPostgreSql();
+		
+		List<Planta> plantas = p.buscarTodos();
+		
+		for(Planta unaPlanta : plantas) {
+			Object fila[]= new Object [4];
+			fila[0]=unaPlanta.getIdPlanta();
+			fila[1]=unaPlanta.getNombrePlanta();
+			fila[2]=unaPlanta.getDireccion();
+			fila[3]=unaPlanta.getTelefono();
+			
+			modelo.addRow(fila);
+		}
+		
+	
+		return tablaPlantas;
+	}
 	
 	
 	

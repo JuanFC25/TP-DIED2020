@@ -1,20 +1,23 @@
 package frsf.isi.died.dominio;
 
+import java.util.Date;
 import java.time.LocalDateTime;
 
 public class Camion {
 
+	private Integer idCamion;
 	private String patente;
 	private String marca;
 	private String modelo;
 	private Double kmRecorridos;
 	private Double costoHora;
 	private Double costoKm;
-	private LocalDateTime fechaDeCompra;
+	private Date fechaDeCompra;
 	
 	
-	public Camion(String patente, String marca, String modelo, Double kmRecorridos, Double costoHora, Double costoKm,
-			LocalDateTime fechaDeCompra) {
+	public Camion(Integer idCamion,String patente, String marca, String modelo, Double kmRecorridos, Double costoHora, Double costoKm,
+			Date fechaDeCompra) {
+		this.idCamion=idCamion;
 		this.patente = patente;
 		this.marca = marca;
 		this.modelo = modelo;
@@ -27,6 +30,17 @@ public class Camion {
 
 	public Camion() {
 		// TODO Auto-generated constructor stub
+	}
+
+	
+
+	public Integer getIdCamion() {
+		return idCamion;
+	}
+
+
+	public void setIdCamion(Integer idCamion) {
+		this.idCamion = idCamion;
 	}
 
 
@@ -90,12 +104,12 @@ public class Camion {
 	}
 
 
-	public LocalDateTime getFechaDeCompra() {
+	public Date getFechaDeCompra() {
 		return fechaDeCompra;
 	}
 
 
-	public void setFechaDeCompra(LocalDateTime fechaDeCompra) {
+	public void setFechaDeCompra(Date fechaDeCompra) {
 		this.fechaDeCompra = fechaDeCompra;
 	}
 	
