@@ -28,7 +28,9 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import frsf.isi.died.gui.CamionGui;
+import frsf.isi.died.gui.InsumoGeneralGui;
 import frsf.isi.died.gui.InsumoGui;
+import frsf.isi.died.gui.InsumoLuquidoGui;
 import frsf.isi.died.gui.PlantaGui;
 
 public class App extends JFrame{
@@ -41,11 +43,15 @@ public class App extends JFrame{
 	private JMenuBar barraMenu;
 	private JMenuItem verPlantas;
 	private JMenuItem verCamiones;
+	private JMenuItem verInsumosGenerales;
+	private JMenuItem verInsumosLiquidos;
+	
 	
 	private PlantaGui pantallaPlantas;
 	private CamionGui pantallaCamiones;
-	private InsumoGui pantallaInsumos;
-	 
+	private InsumoGeneralGui pantallaInsumosGenerales;
+	private InsumoLuquidoGui pantallaInsumosLiquidos;
+	
 	private void armarApp() {
 		
 		
@@ -56,11 +62,15 @@ public class App extends JFrame{
 		this.gbc = new GridBagConstraints();
 		this.verPlantas = new JMenuItem("Ver plantas");
 		this.verCamiones = new JMenuItem("Ver camiones");
+		this.verInsumosGenerales = new JMenuItem("Insumos Generales");
+		this.verInsumosLiquidos = new JMenuItem("Insumos Liquidos");
 		
 		this.pantallaPlantas = new PlantaGui();
 		this.pantallaCamiones= new CamionGui();
-		this.pantallaInsumos = new InsumoGui();
-	
+		this.pantallaInsumosGenerales = new InsumoGeneralGui();
+		//this.pantallaInsumosLiquidos= new InsumoLiquidoGui();
+		
+		
 		pantallaPlantas.pantallaPrincipalPlantas(this);
 		
 		verPlantas.addActionListener(e->{
@@ -72,7 +82,15 @@ public class App extends JFrame{
 			this.repaint();
 		});
 		
-		menuInsumos.addActionListener(new ActionListener() {
+		verInsumosGenerales.addActionListener(e->{
+		
+			pantallaInsumosGenerales.pantallaPrincipalInsumoGeneral(this);
+			
+			
+			this.revalidate();
+			this.repaint();
+		}); // pantallaPrincipalInsumoGeneral
+		verInsumosLiquidos.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -80,7 +98,6 @@ public class App extends JFrame{
 				
 			}
 		});
-		
 		
 		verCamiones.addActionListener(e-> {
 			
@@ -94,6 +111,8 @@ public class App extends JFrame{
 		
 		menuPlantas.add(verPlantas);
 		menuCamiones.add(verCamiones);
+		menuInsumos.add(verInsumosGenerales);
+		menuInsumos.add(verInsumosLiquidos);
 		barraMenu.add(menuPlantas);
 		barraMenu.add(menuInsumos);
 		barraMenu.add(menuCamiones);
