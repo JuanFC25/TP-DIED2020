@@ -165,8 +165,5 @@ public class InsumoGeneralDaoPostgreSql implements InsumoGeneralDao{
 //		return null;
 //	}
 	
-	
-	
-	
 }
 

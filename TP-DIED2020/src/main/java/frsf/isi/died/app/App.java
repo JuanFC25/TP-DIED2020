@@ -90,6 +90,7 @@ public class App extends JFrame{
 			this.revalidate();
 			this.repaint();
 		}); // pantallaPrincipalInsumoGeneral
+		
 		verInsumosLiquidos.addActionListener(new ActionListener() {
 			
 			@Override
