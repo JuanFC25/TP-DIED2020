@@ -8,12 +8,16 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.RowFilter.ComparisonType;
+import javax.swing.RowSorter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
@@ -29,10 +33,12 @@ import frsf.isi.died.exceptions.FormatoFechaException;
 import frsf.isi.died.exceptions.FormatoNumericoException;
 import frsf.isi.died.exceptions.IdUtilizadoException;
 import frsf.isi.died.exceptions.LongitudException;
+import frsf.isi.died.gui.util.MiModelo;
 
 
 public class CamionGui {
 
+	private TableRowSorter<TableModel> ordenador;
 	
 	public void pantallaPrincipalCamiones(App app) {
 		app.activarMenu();
@@ -40,12 +46,28 @@ public class CamionGui {
 		Object [] atributos = new Object[8];
 		atributos[0]=-1;
 		
+		JComboBox<String> listaBusqueda= new JComboBox<String>();
+		
+		listaBusqueda.addItem("ID");
+		listaBusqueda.addItem("Patente");
+		listaBusqueda.addItem("Marca");
+		listaBusqueda.addItem("Modelo");
+		listaBusqueda.addItem("KM Recorridos");
+		listaBusqueda.addItem("Costo x hora");
+		listaBusqueda.addItem("Costo x km");
+		listaBusqueda.addItem("Fecha de compra");
+
 		JPanel panel = new JPanel(new GridBagLayout());
 		JScrollPane scrollCamiones=new JScrollPane();
 	    JTable tablaCamiones = this.dibujarTablaCamiones();
-		JLabel etiqueta1 = new JLabel("Lista de Camiones - Empresa X");
-		scrollCamiones.setViewportView(tablaCamiones);
+	    scrollCamiones.setViewportView(tablaCamiones);
+	    
+	    JLabel etiqueta1 = new JLabel("Lista de Camiones - Empresa X");
+		JLabel etiquetaFiltrar = new JLabel("Filtar:");
 		
+		JTextField ingresarFiltrar = new JTextField(20);
+		
+		JButton botonBuscar = new JButton ("Buscar");
 		JButton botonAgregarCamion = new JButton("Agregar Camion");
 		JButton botonEditarCamion = new JButton("Editar");
 		
@@ -95,16 +117,74 @@ public class CamionGui {
 			}
 		});
 		
+		botonBuscar.addActionListener( e -> {
+			
+			switch ((String) listaBusqueda.getSelectedItem()) {
+			case "ID":
+				ordenador.setRowFilter(RowFilter.regexFilter(ingresarFiltrar.getText(), 0));
+				break;
+			case "Patente":
+				ordenador.setRowFilter(RowFilter.regexFilter(ingresarFiltrar.getText(), 1));
+				break;
+			case "Marca":
+				ordenador.setRowFilter(RowFilter.regexFilter(ingresarFiltrar.getText(), 2));
+				break;
+			case "Modelo":
+				ordenador.setRowFilter(RowFilter.regexFilter(ingresarFiltrar.getText(), 3));
+				break;
+			case "KM Recorridos":
+				ordenador.setRowFilter(RowFilter.regexFilter(ingresarFiltrar.getText(), 4));
+				break;
+			case "Costo x hora":
+				ordenador.setRowFilter(RowFilter.regexFilter(ingresarFiltrar.getText(), 5));
+				break;
+			case "Costo x km":
+				ordenador.setRowFilter(RowFilter.regexFilter(ingresarFiltrar.getText(), 6));
+				break;
+			case "Fecha de compra":
+				ordenador.setRowFilter(RowFilter.regexFilter(ingresarFiltrar.getText(), 7));
+				break;
+			}
+			
+		});
+		
 		
 		
 		app.gbc.gridx=0;
-		app.gbc.gridwidth=3;
+		app.gbc.gridwidth=2;
 		app.gbc.gridy=0;
 		panel.add(etiqueta1,app.gbc);
 		
 		app.gbc.gridx=0;
+		app.gbc.gridwidth=1;
 		app.gbc.gridy=1;
-		app.gbc.gridwidth=5;
+		panel.add(etiquetaFiltrar,app.gbc);
+		
+		app.gbc.gridx=1;
+		app.gbc.gridwidth=2;
+		app.gbc.gridy=1;
+		panel.add(ingresarFiltrar,app.gbc);
+		
+		
+		app.gbc.gridx=3;
+		app.gbc.gridwidth=1;
+		app.gbc.gridy=1;
+		panel.add(listaBusqueda,app.gbc);
+		
+		
+		app.gbc.gridx=4;
+		app.gbc.gridwidth=1;
+		app.gbc.gridy=1;
+		panel.add(botonBuscar,app.gbc);
+		
+		
+		
+		
+		
+		
+		app.gbc.gridx=0;
+		app.gbc.gridy=2;
+		app.gbc.gridwidth=6;
 		app.gbc.weightx=0.1;
 		app.gbc.fill=GridBagConstraints.BOTH;
 		panel.add(scrollCamiones,app.gbc);
@@ -112,12 +192,12 @@ public class CamionGui {
 		
 		app.gbc.gridx=0;
 		app.gbc.gridwidth=1;
-		app.gbc.gridy=2;
+		app.gbc.gridy=3;
 		panel.add(botonAgregarCamion,app.gbc);
 		
 		app.gbc.gridx=1;
 		app.gbc.gridwidth=1;
-		app.gbc.gridy=2;
+		app.gbc.gridy=3;
 		panel.add(botonEditarCamion,app.gbc);
 		
 		
@@ -467,16 +547,9 @@ JPanel panel=new JPanel(new GridBagLayout());
 
 	private JTable dibujarTablaCamiones() {
 
-		
-		class MiModelo extends DefaultTableModel	{
-			private static final long serialVersionUID = 1L;
 
-		public boolean isCellEditable (int row, int column) {
-		       return false;
-		   }
-		}
-		
 		MiModelo modelo = new MiModelo();	
+		
 		
 		modelo.addColumn("Id Camion");
 		modelo.addColumn("Patente");
@@ -488,11 +561,14 @@ JPanel panel=new JPanel(new GridBagLayout());
 		modelo.addColumn("Fecha de Compra");
 		
 		JTable tablaCamiones=new JTable(modelo);
+	
 		
 		TableRowSorter<TableModel> ordenador=new TableRowSorter<TableModel>(modelo);
 		tablaCamiones.setRowSorter(ordenador);
+		this.ordenador=ordenador;
 		
 		TableColumnModel modeloColumna = tablaCamiones.getColumnModel();
+		
 		
 		modeloColumna.getColumn(0).setPreferredWidth(100);
 		modeloColumna.getColumn(1).setPreferredWidth(100);
@@ -522,9 +598,6 @@ JPanel panel=new JPanel(new GridBagLayout());
 		
 		return tablaCamiones;
 	}
-	
-	
-	
 	
 }
 

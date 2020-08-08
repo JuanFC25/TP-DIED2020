@@ -15,6 +15,11 @@ public class Planta {
 	}
 	
 	
+	public Planta() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public String getNombrePlanta() {
 		return nombrePlanta;
 	}
@@ -47,6 +52,9 @@ public class Planta {
 		this.telefono = telefono;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return ("ID:" + this.idPlanta + "  Nombre:" + this.nombrePlanta);
+	}
 	
 }

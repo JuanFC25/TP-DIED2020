@@ -4,23 +4,38 @@ package frsf.isi.died.dominio;
 
 public class Ruta {
 
+	private Integer idRuta;
 	private Double distancia;
-	private Integer duracionEstimadaMinutos;
+	private Integer duracionEstimadaHoras;
 	private Integer pesoMaximo;
 	
-	private Planta plantaOrigen;
-	private Planta plantaDestino;
+	private Integer IdPlantaOrigen;
+	private Integer IdPlantaDestino;
+	
+	
+	
+	
+	
+	public Ruta(Integer idRuta,Integer idPlantaOrigen,Integer idPlantaDestino, Double distancia,
+			Integer duracionEstimadaHoras, Integer pesoMaximo ) {
+		this.idRuta = idRuta;
+		this.distancia = distancia;
+		this.duracionEstimadaHoras = duracionEstimadaHoras;
+		this.pesoMaximo = pesoMaximo;
+		IdPlantaOrigen = idPlantaOrigen;
+		IdPlantaDestino = idPlantaDestino;
+	}
 	public Double getDistancia() {
 		return distancia;
 	}
 	public void setDistancia(Double distancia) {
 		this.distancia = distancia;
 	}
-	public Integer getDuracionEstimadaMinutos() {
-		return duracionEstimadaMinutos;
+	public Integer getduracionEstimadaHoras() {
+		return duracionEstimadaHoras;
 	}
-	public void setDuracionEstimadaMinutos(Integer duracionEstimadaMinutos) {
-		this.duracionEstimadaMinutos = duracionEstimadaMinutos;
+	public void setduracionEstimadaHoras(Integer duracionEstimadaHoras) {
+		this.duracionEstimadaHoras = duracionEstimadaHoras;
 	}
 	public Integer getPesoMaximo() {
 		return pesoMaximo;
@@ -28,18 +43,26 @@ public class Ruta {
 	public void setPesoMaximo(Integer pesoMaximo) {
 		this.pesoMaximo = pesoMaximo;
 	}
-	public Planta getPlantaOrigen() {
-		return plantaOrigen;
+	public Integer getIdPlantaOrigen() {
+		return IdPlantaOrigen;
 	}
-	public void setPlantaOrigen(Planta plantaOrigen) {
-		this.plantaOrigen = plantaOrigen;
+	public void setIdPlantaOrigen(Integer IdPlantaOrigen) {
+		this.IdPlantaOrigen = IdPlantaOrigen;
 	}
-	public Planta getPlantaDestino() {
-		return plantaDestino;
+	public Integer getIdPlantaDestino() {
+		return IdPlantaDestino;
 	}
-	public void setPlantaDestino(Planta plantaDestino) {
-		this.plantaDestino = plantaDestino;
+	public void setIdPlantaDestino(Integer IdPlantaDestino) {
+		this.IdPlantaDestino = IdPlantaDestino;
 	}
+	public Integer getIdRuta() {
+		return idRuta;
+	}
+	public void setIdRuta(Integer idRuta) {
+		this.idRuta = idRuta;
+	}
+	
+	
 	
 	
 }

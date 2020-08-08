@@ -23,6 +23,13 @@ public class PlantaDaoPostgreSql implements PlantaDao{
 	private static final String SELECT_ALL_IDPLANTA =
 			"SELECT idPlanta FROM trabajoPractico.PLANTA";
 	
+	private static final String SELECT_PLANTA =
+			"SELECT idPlanta,nombrePlanta,direccion,telefono FROM trabajoPractico.PLANTA"
+			+ " WHERE idPlanta = ?";
+	
+	private static final String DELETE_PLANTA =
+			"DELETE FROM trabajoPractico.PLANTA WHERE idPlanta = ?";
+	
 	public List<Planta> buscarTodos() {
 		List<Planta> lista = new ArrayList<Planta>();
 		Connection conn = DB.getConexion();
@@ -149,8 +156,41 @@ public class PlantaDaoPostgreSql implements PlantaDao{
 		
 		return lista;
 	}
-	
-	
+
+
+	@Override
+	public Planta obtenerPlanta(Integer id) {
+		
+		Planta p = new Planta();
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			System.out.println("EJECUTA SELECT PLANTA");
+			pstmt= conn.prepareStatement(SELECT_PLANTA);
+			pstmt.setInt(1, id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				p.setIdPlanta((rs.getInt("idPlanta")));
+				p.setNombrePlanta((rs.getString("nombrePlanta")));
+				p.setDireccion((rs.getString("direccion")));
+				p.setTelefono((rs.getInt("telefono")));
+			}		
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+			
+		return p;
+
+	}
 	
 	
 }

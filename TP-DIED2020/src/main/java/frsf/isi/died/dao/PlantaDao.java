@@ -11,5 +11,6 @@ public interface PlantaDao {
 	public Planta save(Planta p) ;
 	public Planta update(Planta p) ;
 	public List<Integer> obtenerIds();
+	public Planta obtenerPlanta (Integer id);
 }
 

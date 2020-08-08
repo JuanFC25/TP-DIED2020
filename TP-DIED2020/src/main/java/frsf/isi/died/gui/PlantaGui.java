@@ -34,6 +34,7 @@ public class PlantaGui {
 	Integer valorId,telefono;
 	String nombre,direccion;
 	
+	
 	public void pantallaPrincipalPlantas(App app) {
 		
 		app.activarMenu();
@@ -41,17 +42,24 @@ public class PlantaGui {
 		JPanel panel=new JPanel(new GridBagLayout());
 		
 		JScrollPane scrollPlantas=new JScrollPane();
+		
 		JLabel tituloPlantas=new JLabel("LISTA DE PLANTAS - Empresa x");
 		JLabel filtrar = new JLabel("Filtar:");
+		
 		JTextField campoTexto = new JTextField(20);
+		
 		JButton boton3 = new JButton ("Buscar");
 		JButton boton1 = new JButton("Agregar Planta");
 		JButton boton2 = new JButton("Ver Pedidos");
 		JButton botonEditar = new JButton("Editar");
+		JButton botonRutas = new JButton("Ver Rutas");
+		
+		JTable tablaPlantas=this.dibujarTablaPlantas();
+		
 		valorId=0;
 		
 		
-		JTable tablaPlantas=this.dibujarTablaPlantas();
+		
 		
 		tablaPlantas.addMouseListener(new MouseAdapter() 
 		   {
@@ -81,6 +89,10 @@ public class PlantaGui {
 			}
 		});
 		
+		botonRutas.addActionListener( e-> {
+			RutaGui pantallaRutas=new RutaGui();
+			pantallaRutas.pantallaPrincipalRutas(app);
+		});
 
 		app.gbc.gridx = 0;
 		app.gbc.gridy = 0;
@@ -140,9 +152,14 @@ public class PlantaGui {
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
 		app.gbc.fill=GridBagConstraints.NONE;
-		
 		panel.add(boton2,app.gbc);
 		
+		app.gbc.gridx=3;
+		app.gbc.gridy = 4;
+		app.gbc.gridwidth=1;
+		app.gbc.gridheight=1;
+		app.gbc.fill=GridBagConstraints.NONE;
+		panel.add(botonRutas,app.gbc);
 		
 		app.resetGbc();
 		app.setVerPlantasFalse();
@@ -160,14 +177,17 @@ public class PlantaGui {
 		app.desactivarMenu();
 		
 		JPanel panel=new JPanel(new GridBagLayout());
+		
 		JLabel etiquetaId = new JLabel("ID: ");
 		JLabel etiquetaNombrePlanta=new JLabel("Nombre planta: ");
 		JLabel direccion=new JLabel("Direccion: ");
 		JLabel telefono=new JLabel("Telefono: ");
+		
 		JTextField ingresarId = new JTextField(30);
 		JTextField ingresarNombrePlanta=new JTextField(30);
 		JTextField ingresarDireccion=new JTextField(30);
 		JTextField ingresarTelefono = new JTextField(30);
+		
 		JButton cancelar = new JButton("Cancelar");
 		JButton agregar = new JButton("Agregar Planta");
 		
@@ -250,6 +270,7 @@ public class PlantaGui {
 		panel.add(agregar,app.gbc);
 		
 		
+		app.resetGbc();
 		app.setContentPane(panel);
 		app.revalidate();
 		app.repaint();

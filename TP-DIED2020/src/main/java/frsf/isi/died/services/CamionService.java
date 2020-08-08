@@ -50,4 +50,6 @@ public class CamionService {
 		CamionDao cd=new CamionDaoPostgreSql();
 		cd.update(c);
 	}
+
+	
 }
