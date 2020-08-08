@@ -8,11 +8,12 @@ public class InsumoGeneral extends Insumo {
 	private Double pesoPorUnidadMedida;
 	
 
-	public InsumoGeneral(Double costoUnidadMedida, UnidadDeMedida unidadDeMedida, String descripcion) {
-		super(costoUnidadMedida, unidadDeMedida, descripcion);
-		// TODO Auto-generated constructor stub
+	public InsumoGeneral(Integer idInsumoGeneral, String descripcion, String unidadDeMedida, Double costoUnidadMedida,Double peso) {
+		super(idInsumoGeneral, costoUnidadMedida, unidadDeMedida, descripcion);
+		this.pesoPorUnidadMedida=peso;
 	}
 
+	@Override
 	public Double pesoPorUnidad() {
 		return pesoPorUnidadMedida;
 	}

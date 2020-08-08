@@ -5,9 +5,9 @@ import frsf.isi.died.dominio.util.UnidadDeMedida;
 public abstract class Insumo {
 
 	private Double costoUnidadMedida;
-	private UnidadDeMedida unidadDeMedida;
+	private String unidadDeMedida;
 	private String descripcion;
-	private Integer IDInsumo;
+	private Integer IdInsumo;
 	
 	public Double getCostoUnidadMedida() {
 		return costoUnidadMedida;
@@ -15,10 +15,10 @@ public abstract class Insumo {
 	public void setCostoUnidadMedida(Double costoUnidadMedida) {
 		this.costoUnidadMedida = costoUnidadMedida;
 	}
-	public UnidadDeMedida getUnidadDeMedida() {
+	public String getUnidadDeMedida() {
 		return unidadDeMedida;
 	}
-	public void setUnidadDeMedida(UnidadDeMedida unidadDeMedida) {
+	public void setUnidadDeMedida(String unidadDeMedida) {
 		this.unidadDeMedida = unidadDeMedida;
 	}
 	public String getDescripcion() {
@@ -28,17 +28,22 @@ public abstract class Insumo {
 		this.descripcion = descripcion;
 	}
 	
-	public Insumo(Double costoUnidadMedida, UnidadDeMedida unidadDeMedida, String descripcion) {
-		super();
+	public Insumo(Integer idInsumo,Double costoUnidadMedida, String unidadDeMedida, String descripcion) {
+		
+		this.IdInsumo=idInsumo;
 		this.costoUnidadMedida = costoUnidadMedida;
 		this.unidadDeMedida = unidadDeMedida;
 		this.descripcion = descripcion;
 	}
-	public Integer getIDInsumo() {
-		return IDInsumo;
+	public Integer getIdInsumo() {
+		return IdInsumo;
 	}
 	public void setIDInsumo(Integer iDInsumo) {
-		IDInsumo = iDInsumo;
+		IdInsumo = iDInsumo;
+	}
+	
+	 public Double pesoPorUnidad() {
+		return 0.0;
 	}
 	
 	

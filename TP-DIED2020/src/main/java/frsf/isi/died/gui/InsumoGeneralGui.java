@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -20,11 +21,13 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import frsf.isi.died.app.App;
+import frsf.isi.died.controller.InsumoGeneralController;
 import frsf.isi.died.controller.PlantaController;
 import frsf.isi.died.dao.InsumoGeneralDao;
 import frsf.isi.died.dao.InsumoGeneralDaoPostgreSql;
 import frsf.isi.died.dao.PlantaDao;
 import frsf.isi.died.dao.PlantaDaoPostgreSql;
+import frsf.isi.died.dominio.Insumo;
 import frsf.isi.died.dominio.InsumoGeneral;
 import frsf.isi.died.dominio.Planta;
 import frsf.isi.died.dominio.util.UnidadDeMedida;
@@ -82,7 +85,7 @@ public class InsumoGeneralGui {
 		
 	
 		boton1.addActionListener( e-> {
-			pantallaAgregarPlanta(app);
+			pantallaAgregarInsumoGeneral(app);
 		});
 		
 //		botonEditar.addActionListener( e-> {
@@ -176,18 +179,24 @@ public class InsumoGeneralGui {
 	
 
 	
-	public void pantallaAgregarPlanta(App app) {
+	public void pantallaAgregarInsumoGeneral(App app) {
 		app.desactivarMenu();
 		
 		JPanel panel=new JPanel(new GridBagLayout());
-		JLabel etiquetaId = new JLabel("ID: ");
-		JLabel etiquetaNombrePlanta=new JLabel("Nombre planta: ");
-		JLabel direccion=new JLabel("Direccion: ");
-		JLabel telefono=new JLabel("Telefono: ");
-		JTextField ingresarId = new JTextField(30);
-		JTextField ingresarNombrePlanta=new JTextField(30);
-		JTextField ingresarDireccion=new JTextField(30);
-		JTextField ingresarTelefono = new JTextField(30);
+		
+		
+		JLabel etiquetaIdInsumo = new JLabel("ID: ");
+		JLabel etiquetaDescripcion=new JLabel("Descripcion: ");
+		JLabel etiquetaUnidad=new JLabel("Unidad: ");
+		JLabel etiquetaCostoXinsumo=new JLabel("Costo por Insumo: ");
+		JLabel etiquetaPeso=new JLabel("Peso: ");
+		
+		JTextField ingresarIdInsumo = new JTextField(30);
+		JTextField ingresarDescripcion=new JTextField(30);
+		JTextField ingresarUnidad=new JTextField(30);
+		JTextField ingresarCostoXinsumo = new JTextField(30);
+		JTextField ingresarPeso = new JTextField(30);
+		
 		JButton cancelar = new JButton("Cancelar");
 		JButton agregar = new JButton("Agregar Planta");
 		
@@ -198,70 +207,83 @@ public class InsumoGeneralGui {
 		
 		agregar.addActionListener( e -> {
 	
-			String id = ingresarId.getText();
-			String planta = ingresarNombrePlanta.getText();
-			String direc = ingresarDireccion.getText();
-			String tel= ingresarTelefono.getText();
+			String id = ingresarIdInsumo.getText();
+			String descripcion = ingresarDescripcion.getText();
+			String unidad = ingresarUnidad.getText();
+			String costoXinsumo = ingresarCostoXinsumo.getText();
+			String peso = ingresarPeso.getText();
 			
-			PlantaController pc = new PlantaController();
+			InsumoGeneralController igc = new InsumoGeneralController();
+//			
+			igc.agregarInsumoGeneral(id,descripcion,unidad,costoXinsumo,peso);
+			JOptionPane.showMessageDialog(panel,"El insumo fue correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+			this.pantallaPrincipalInsumoGeneral(app);
 			
-			try {
-				pc.agregarPlanta(id, planta, direc, tel);
-				JOptionPane.showMessageDialog(panel,"La planta fue agregada correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-				this.pantallaPrincipalInsumoGeneral(app);
-			} catch (CampoVacioException e1) {
-				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			} catch (LongitudException e1) {
-				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			} catch (FormatoNumericoException e1) {
-				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			} catch (IdUtilizadoException e1) {
-				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			}
-	
+//			try {
+//				pc.agregarPlanta(id, planta, direc, tel);
+//				JOptionPane.showMessageDialog(panel,"La planta fue agregada correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+//				this.pantallaPrincipalInsumoGeneral(app);
+//			} catch (CampoVacioException e1) {
+//				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//			} catch (LongitudException e1) {
+//				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//			} catch (FormatoNumericoException e1) {
+//				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//			} catch (IdUtilizadoException e1) {
+//				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//			}
+//	
 		});
 		
 		app.gbc.gridx=0;
 		app.gbc.gridy=0;
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
-		panel.add(etiquetaId,app.gbc);
+		panel.add(etiquetaIdInsumo,app.gbc);
 		
 		app.gbc.gridx=1;
 		app.gbc.gridwidth=3;
-		panel.add(ingresarId,app.gbc);
+		panel.add(ingresarIdInsumo,app.gbc);
 		
 		app.gbc.gridx=0;
 		app.gbc.gridy=1;
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
-		panel.add(etiquetaNombrePlanta,app.gbc);
+		panel.add(etiquetaDescripcion,app.gbc);
 		
 		app.gbc.gridx=1;
 		app.gbc.gridwidth=3;
-		panel.add(ingresarNombrePlanta,app.gbc);
+		panel.add(ingresarDescripcion,app.gbc);
 		
 		app.gbc.gridx=0;
 		app.gbc.gridy=2;
 		app.gbc.gridwidth=1;
-		panel.add(direccion,app.gbc);
+		panel.add(etiquetaUnidad,app.gbc);
 		
 		app.gbc.gridx=1;
 		app.gbc.gridwidth=3;
-		panel.add(ingresarDireccion,app.gbc);
+		panel.add(ingresarUnidad,app.gbc);
 		
 		app.gbc.gridx=0;
 		app.gbc.gridy=3;
 		app.gbc.gridwidth=1;
-		panel.add(telefono,app.gbc);
+		panel.add(etiquetaCostoXinsumo,app.gbc);
 		
 		app.gbc.gridx=1;
 		app.gbc.gridwidth=3;
-		panel.add(ingresarTelefono,app.gbc);
+		panel.add(ingresarCostoXinsumo,app.gbc);
 		
+		app.gbc.gridx=0;
+		app.gbc.gridy=4;
+		app.gbc.gridwidth=1;
+		panel.add(etiquetaPeso,app.gbc);
+		
+		app.gbc.gridx=1;
+		app.gbc.gridwidth=3;
+		panel.add(ingresarPeso,app.gbc);
 		
 		app.gbc.gridx=2;
-		app.gbc.gridy=4;
+		app.gbc.gridy=5;
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
 		panel.add(cancelar,app.gbc);
@@ -424,12 +446,12 @@ public class InsumoGeneralGui {
 		
 		
 		InsumoGeneralDao igd= new InsumoGeneralDaoPostgreSql();
-		List<InsumoGeneral> insumosG = igd.buscarTodos();
+		List<Insumo> insumosG = igd.buscarTodos();
 		
 		
-		for(InsumoGeneral unInsumo : insumosG) {
+		for(Insumo unInsumo : insumosG) {
 			Object fila[]= new Object [5];
-			fila[0]=unInsumo.getIDInsumo();
+			fila[0]=unInsumo.getIdInsumo();
 			fila[1]=unInsumo.getDescripcion();
 			fila[2]=unInsumo.getUnidadDeMedida();
 			fila[3]=unInsumo.getCostoUnidadMedida();

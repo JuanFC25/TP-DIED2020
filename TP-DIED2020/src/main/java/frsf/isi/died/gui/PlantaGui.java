@@ -160,12 +160,16 @@ public class PlantaGui {
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
 		app.gbc.fill=GridBagConstraints.NONE;
-<<<<<<< HEAD
+
 		panel.add(botonRutas,app.gbc);
-=======
+		
+		app.gbc.gridx=4;
+		app.gbc.gridy = 4;
+		app.gbc.gridwidth=1;
+		app.gbc.gridheight=1;
 		panel.add(botonInsumos, app.gbc);
 		
->>>>>>> d14f3e9547ee97f4468b4c970201b9af127ee952
+
 		
 		app.resetGbc();
 		app.setVerPlantasFalse();
