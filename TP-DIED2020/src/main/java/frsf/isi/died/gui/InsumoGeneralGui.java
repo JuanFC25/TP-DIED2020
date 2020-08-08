@@ -21,58 +21,62 @@ import javax.swing.table.TableRowSorter;
 
 import frsf.isi.died.app.App;
 import frsf.isi.died.controller.PlantaController;
+import frsf.isi.died.dao.InsumoGeneralDao;
+import frsf.isi.died.dao.InsumoGeneralDaoPostgreSql;
 import frsf.isi.died.dao.PlantaDao;
 import frsf.isi.died.dao.PlantaDaoPostgreSql;
+import frsf.isi.died.dominio.InsumoGeneral;
 import frsf.isi.died.dominio.Planta;
+import frsf.isi.died.dominio.util.UnidadDeMedida;
 import frsf.isi.died.exceptions.CampoVacioException;
 import frsf.isi.died.exceptions.FormatoNumericoException;
 import frsf.isi.died.exceptions.IdUtilizadoException;
 import frsf.isi.died.exceptions.LongitudException;
 
-public class PlantaGui {
-
-	Integer valorId,telefono;
-	String nombre,direccion;
+public class InsumoGeneralGui {
+//
+//	Integer valorId,telefono;
+//	String nombre,direccion;
+	
+	Integer IDInsumo;
+	Double costoUnidadMedida;
+	UnidadDeMedida unidadDeMedida;
+	String descripcion;
+	Double pesoPorUnidadDouble;
 	
 	
-	public void pantallaPrincipalPlantas(App app) {
+	
+	public void pantallaPrincipalInsumoGeneral(App app) {
 		
 		app.activarMenu();
 		
 		JPanel panel=new JPanel(new GridBagLayout());
 		
 		JScrollPane scrollPlantas=new JScrollPane();
-		
-		JLabel tituloPlantas=new JLabel("LISTA DE PLANTAS - Empresa x");
+		JLabel tituloPlantas=new JLabel("LISTA DE INSUMOS GENERALES - Empresa x");
 		JLabel filtrar = new JLabel("Filtar:");
-		
 		JTextField campoTexto = new JTextField(20);
-		
 		JButton boton3 = new JButton ("Buscar");
-		JButton boton1 = new JButton("Agregar Planta");
-		JButton boton2 = new JButton("Ver Pedidos");
-		JButton botonInsumos = new JButton("Ver Insumos");
+		JButton boton1 = new JButton("Agregar Insumo General");
 		JButton botonEditar = new JButton("Editar");
-		JButton botonRutas = new JButton("Ver Rutas");
-		
-		JTable tablaPlantas=this.dibujarTablaPlantas();
-		
-		valorId=0;
+		//valorId=0;
 		
 		
+		JTable tablaInsumosGenerales=this.dibujarTablaInsumosGenerales();
 		
-		
-		tablaPlantas.addMouseListener(new MouseAdapter() 
+		tablaInsumosGenerales.addMouseListener(new MouseAdapter() 
 		   {
 		      public void mouseClicked(MouseEvent e) 
 		      {
-		         int fila = tablaPlantas.rowAtPoint(e.getPoint());
-		         int columna = tablaPlantas.columnAtPoint(e.getPoint());
+		         int fila = tablaInsumosGenerales.rowAtPoint(e.getPoint());
+		         int columna = tablaInsumosGenerales.columnAtPoint(e.getPoint());
 		         if ((fila > -1) && (columna > -1))
-		            valorId = (Integer) tablaPlantas.getValueAt(fila,0);
-		         	nombre = (String) tablaPlantas.getValueAt(fila, 1);
-		         	direccion = (String) tablaPlantas.getValueAt(fila, 2);
-		         	telefono = (Integer) tablaPlantas.getValueAt(fila,3);
+//		            valorId = (Integer) tablaInsumosGenerales.getValueAt(fila,0);
+//		         	nombre = (String) tablaInsumosGenerales.getValueAt(fila, 1);
+//		         	direccion = (String) tablaInsumosGenerales.getValueAt(fila, 2);
+//		         	telefono = (Integer) tablaInsumosGenerales.getValueAt(fila,3);
+		        	IDInsumo = (Integer) tablaInsumosGenerales.getValueAt(fila, 0);
+		        	
 		      }
 		   });
 		
@@ -81,19 +85,15 @@ public class PlantaGui {
 			pantallaAgregarPlanta(app);
 		});
 		
-		botonEditar.addActionListener( e-> {
-			if(valorId == 0) {
-				JOptionPane.showMessageDialog(panel,"Seleccione una planta", "Error", JOptionPane.ERROR_MESSAGE);	
-			}
-			else {
-				pantallaModificarPlanta(app,valorId,nombre,direccion,telefono);
-			}
-		});
+//		botonEditar.addActionListener( e-> {
+//			if(valorId == 0) {
+//				JOptionPane.showMessageDialog(panel,"Seleccione una planta", "Error", JOptionPane.ERROR_MESSAGE);	
+//			}
+//			else {
+//				pantallaModificarPlanta(app,valorId,nombre,direccion,telefono);
+//			}
+//		});
 		
-		botonRutas.addActionListener( e-> {
-			RutaGui pantallaRutas=new RutaGui();
-			pantallaRutas.pantallaPrincipalRutas(app);
-		});
 
 		app.gbc.gridx = 0;
 		app.gbc.gridy = 0;
@@ -125,7 +125,7 @@ public class PlantaGui {
 		app.gbc.gridheight=1;
 		app.gbc.weightx=0.1;
 		app.gbc.fill=GridBagConstraints.HORIZONTAL;
-		scrollPlantas.setViewportView(tablaPlantas);
+		scrollPlantas.setViewportView(tablaInsumosGenerales);
 		panel.add(scrollPlantas,app.gbc);
 		app.gbc.weightx=0;
 
@@ -147,25 +147,22 @@ public class PlantaGui {
 		
 		panel.add(botonEditar,app.gbc);
 		
+//		
+//		app.gbc.gridx=2;
+//		app.gbc.gridy = 4;
+//		app.gbc.gridwidth=1;
+//		app.gbc.gridheight=1;
+//		app.gbc.fill=GridBagConstraints.NONE;
+//		
+//		panel.add(boton2,app.gbc);
+//		
+//		app.gbc.gridx=3;
+//		app.gbc.gridy = 4;
+//		app.gbc.gridwidth=1;
+//		app.gbc.gridheight=1;
+//		app.gbc.fill=GridBagConstraints.NONE;
+//		panel.add(botonInsumos, app.gbc);
 		
-		app.gbc.gridx=2;
-		app.gbc.gridy = 4;
-		app.gbc.gridwidth=1;
-		app.gbc.gridheight=1;
-		app.gbc.fill=GridBagConstraints.NONE;
-		panel.add(boton2,app.gbc);
-		
-		app.gbc.gridx=3;
-		app.gbc.gridy = 4;
-		app.gbc.gridwidth=1;
-		app.gbc.gridheight=1;
-		app.gbc.fill=GridBagConstraints.NONE;
-<<<<<<< HEAD
-		panel.add(botonRutas,app.gbc);
-=======
-		panel.add(botonInsumos, app.gbc);
-		
->>>>>>> d14f3e9547ee97f4468b4c970201b9af127ee952
 		
 		app.resetGbc();
 		app.setVerPlantasFalse();
@@ -183,23 +180,20 @@ public class PlantaGui {
 		app.desactivarMenu();
 		
 		JPanel panel=new JPanel(new GridBagLayout());
-		
 		JLabel etiquetaId = new JLabel("ID: ");
 		JLabel etiquetaNombrePlanta=new JLabel("Nombre planta: ");
 		JLabel direccion=new JLabel("Direccion: ");
 		JLabel telefono=new JLabel("Telefono: ");
-		
 		JTextField ingresarId = new JTextField(30);
 		JTextField ingresarNombrePlanta=new JTextField(30);
 		JTextField ingresarDireccion=new JTextField(30);
 		JTextField ingresarTelefono = new JTextField(30);
-		
 		JButton cancelar = new JButton("Cancelar");
 		JButton agregar = new JButton("Agregar Planta");
 		
 		
 		cancelar.addActionListener( e -> {
-			this.pantallaPrincipalPlantas(app);
+			this.pantallaPrincipalInsumoGeneral(app);
 		});
 		
 		agregar.addActionListener( e -> {
@@ -214,7 +208,7 @@ public class PlantaGui {
 			try {
 				pc.agregarPlanta(id, planta, direc, tel);
 				JOptionPane.showMessageDialog(panel,"La planta fue agregada correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-				this.pantallaPrincipalPlantas(app);
+				this.pantallaPrincipalInsumoGeneral(app);
 			} catch (CampoVacioException e1) {
 				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			} catch (LongitudException e1) {
@@ -276,7 +270,6 @@ public class PlantaGui {
 		panel.add(agregar,app.gbc);
 		
 		
-		app.resetGbc();
 		app.setContentPane(panel);
 		app.revalidate();
 		app.repaint();
@@ -303,7 +296,7 @@ public class PlantaGui {
 		
 		
 		cancelar.addActionListener( e -> {
-			this.pantallaPrincipalPlantas(app);
+			this.pantallaPrincipalInsumoGeneral(app);
 		});
 		
 		agregar.addActionListener( e -> {
@@ -318,7 +311,7 @@ public class PlantaGui {
 			try {
 				pc.modificarPlanta(valorId, planta, direc, tel);
 				JOptionPane.showMessageDialog(panel,"La planta fue modificada correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-				this.pantallaPrincipalPlantas(app);
+				this.pantallaPrincipalInsumoGeneral(app);
 			} catch (CampoVacioException e1) {
 				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				e1.printStackTrace();
@@ -330,7 +323,7 @@ public class PlantaGui {
 				e1.printStackTrace();
 			}
 			
-			this.pantallaPrincipalPlantas(app);
+			this.pantallaPrincipalInsumoGeneral(app);
 		});
 		
 		
@@ -400,7 +393,7 @@ public class PlantaGui {
 	
 	
 	
-	private JTable dibujarTablaPlantas() {
+	private JTable dibujarTablaInsumosGenerales() {
 		
 		class MiModelo extends DefaultTableModel	{
 			private static final long serialVersionUID = 1L;
@@ -412,41 +405,44 @@ public class PlantaGui {
 		
 		MiModelo modelo = new MiModelo();	
 		
-		modelo.addColumn("ID Planta");
-		modelo.addColumn("Nombre");
-		modelo.addColumn("Direccion");
-		modelo.addColumn("Telefono");
+		modelo.addColumn("ID Insumo");
+		modelo.addColumn("Descripcio");
+		modelo.addColumn("Unidad Medida");
+		modelo.addColumn("Costo por Unidad");
+		modelo.addColumn("Peso por Unidad");
 	
-		JTable tablaPlantas=new JTable(modelo);
+		JTable tablaInsumosG=new JTable(modelo);
 		TableRowSorter<TableModel> ordenador=new TableRowSorter<TableModel>(modelo);
-		tablaPlantas.setRowSorter(ordenador);
+		tablaInsumosG.setRowSorter(ordenador);
 		
-		TableColumnModel modeloColumna = tablaPlantas.getColumnModel();
-		modeloColumna.getColumn(0).setPreferredWidth(200);
-		modeloColumna.getColumn(1).setPreferredWidth(200);
-		modeloColumna.getColumn(2).setPreferredWidth(200);
-		modeloColumna.getColumn(3).setPreferredWidth(200);
+		TableColumnModel modeloColumna = tablaInsumosG.getColumnModel();
+		modeloColumna.getColumn(0).setPreferredWidth(100);
+		modeloColumna.getColumn(1).setPreferredWidth(100);
+		modeloColumna.getColumn(2).setPreferredWidth(100);
+		modeloColumna.getColumn(3).setPreferredWidth(100);
+		modeloColumna.getColumn(4).setPreferredWidth(100);
 		
 		
+		InsumoGeneralDao igd= new InsumoGeneralDaoPostgreSql();
+		List<InsumoGeneral> insumosG = igd.buscarTodos();
 		
-		PlantaDao p = new PlantaDaoPostgreSql();
 		
-		List<Planta> plantas = p.buscarTodos();
-		
-		for(Planta unaPlanta : plantas) {
-			Object fila[]= new Object [4];
-			fila[0]=unaPlanta.getIdPlanta();
-			fila[1]=unaPlanta.getNombrePlanta();
-			fila[2]=unaPlanta.getDireccion();
-			fila[3]=unaPlanta.getTelefono();
-			
+		for(InsumoGeneral unInsumo : insumosG) {
+			Object fila[]= new Object [5];
+			fila[0]=unInsumo.getIDInsumo();
+			fila[1]=unInsumo.getDescripcion();
+			fila[2]=unInsumo.getUnidadDeMedida();
+			fila[3]=unInsumo.getCostoUnidadMedida();
+			fila[4]=unInsumo.pesoPorUnidad();
 			modelo.addRow(fila);
 		}
 		
 	
-		return tablaPlantas;
+		return tablaInsumosG;
 	}
 	
 	
 	
 }
+
+

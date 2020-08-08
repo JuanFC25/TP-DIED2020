@@ -7,6 +7,7 @@ public abstract class Insumo {
 	private Double costoUnidadMedida;
 	private UnidadDeMedida unidadDeMedida;
 	private String descripcion;
+	private Integer IDInsumo;
 	
 	public Double getCostoUnidadMedida() {
 		return costoUnidadMedida;
@@ -33,6 +34,14 @@ public abstract class Insumo {
 		this.unidadDeMedida = unidadDeMedida;
 		this.descripcion = descripcion;
 	}
+	public Integer getIDInsumo() {
+		return IDInsumo;
+	}
+	public void setIDInsumo(Integer iDInsumo) {
+		IDInsumo = iDInsumo;
+	}
+	
+	
 	
 	
 }
