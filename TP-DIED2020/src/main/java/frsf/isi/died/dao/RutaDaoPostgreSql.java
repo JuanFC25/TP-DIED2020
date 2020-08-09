@@ -26,6 +26,9 @@ public class RutaDaoPostgreSql implements RutaDao{
 	private static final String DELETE_RUTA =
 			"DELETE FROM trabajoPractico.RUTA WHERE idRuta = ?";
 	
+	private static final String UPDATE_RUTA =
+			" UPDATE trabajoPractico.RUTA SET idRuta =? ,idPlantaOrigen = ? , idPlantaDestino =? , distanciaEnKm =?, duracionEnMin =?,cantMaxPermitidaEnKilos=?"
+			+ " WHERE idRuta = ?";
 	
 	@Override
 	public List<Ruta> buscarTodos() {
@@ -147,6 +150,34 @@ public class RutaDaoPostgreSql implements RutaDao{
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void update(Ruta r) {
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		try {
+			System.out.println("EJECUTA UPDATE");
+			pstmt= conn.prepareStatement(UPDATE_RUTA);
+			pstmt.setInt(1, r.getIdRuta());
+			pstmt.setInt(2, r.getIdPlantaOrigen());
+			pstmt.setInt(3, r.getIdPlantaDestino());
+			pstmt.setDouble(4, r.getDistancia());
+			pstmt.setInt(5, r.getduracionEstimadaHoras());
+			pstmt.setInt(6, r.getPesoMaximo());
+			pstmt.setInt(7, r.getIdRuta());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+			
 	}
 	
 }

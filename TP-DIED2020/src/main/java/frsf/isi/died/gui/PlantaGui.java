@@ -28,6 +28,7 @@ import frsf.isi.died.exceptions.CampoVacioException;
 import frsf.isi.died.exceptions.FormatoNumericoException;
 import frsf.isi.died.exceptions.IdUtilizadoException;
 import frsf.isi.died.exceptions.LongitudException;
+import frsf.isi.died.gui.util.MiModelo;
 
 public class PlantaGui {
 
@@ -406,14 +407,7 @@ public class PlantaGui {
 	
 	private JTable dibujarTablaPlantas() {
 		
-		class MiModelo extends DefaultTableModel	{
-			private static final long serialVersionUID = 1L;
 
-		public boolean isCellEditable (int row, int column) {
-		       return false;
-		   }
-		}
-		
 		MiModelo modelo = new MiModelo();	
 		
 		modelo.addColumn("ID Planta");

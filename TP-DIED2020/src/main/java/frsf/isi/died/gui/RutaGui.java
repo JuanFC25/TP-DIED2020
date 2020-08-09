@@ -5,7 +5,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
-import java.util.function.UnaryOperator;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -36,13 +35,13 @@ import frsf.isi.died.exceptions.MismaPlantaException;
 
 public class RutaGui {
 
+	Boolean rutaSeleccionada=false;
 	
 	
 	public void pantallaPrincipalRutas(App app) {
-		
+		rutaSeleccionada=false;
 		Object [] atributos = new Object[6];
-		atributos[0]=-1;
-		
+	
 		JPanel panel=new JPanel(new GridBagLayout());
 		
 		JScrollPane scrollRutas=new JScrollPane();
@@ -63,7 +62,8 @@ public class RutaGui {
 		         int fila = tablaRutas.rowAtPoint(e.getPoint());
 		         int columna = tablaRutas.columnAtPoint(e.getPoint());
 		         if ((fila > -1) && (columna > -1))
-		            atributos[0] = tablaRutas.getValueAt(fila,0);
+		            rutaSeleccionada=true;
+		        	atributos[0] = tablaRutas.getValueAt(fila,0);
 		         	atributos[1] = tablaRutas.getValueAt(fila, 1);
 		         	atributos[2] = tablaRutas.getValueAt(fila, 2);
 		         	atributos[3] = tablaRutas.getValueAt(fila,3);
@@ -80,12 +80,21 @@ public class RutaGui {
 			pantallaAgregarRuta(app);
 		});
 		
-	
+		
+		botonEditarRuta.addActionListener( e-> {
+			if(rutaSeleccionada==false) {
+				JOptionPane.showMessageDialog(panel,"Seleccione una ruta", "Error", JOptionPane.ERROR_MESSAGE);	
+			}else {			
+				pantallaModificarRuta(app, atributos);		
+			}
+			
+			
+		});
 		
 		
 		BotonBorrarRuta.addActionListener( e-> {
 			
-			if((Integer) atributos[0] == -1) {
+			if(rutaSeleccionada==false) {
 				JOptionPane.showMessageDialog(panel,"Seleccione una ruta", "Error", JOptionPane.ERROR_MESSAGE);	
 			}
 			else {
@@ -128,8 +137,8 @@ public class RutaGui {
 		app.gbc.gridy=2;
 		panel.add(BotonBorrarRuta,app.gbc);
 		
-		
-		
+	
+
 		app.resetGbc();
 		app.setVerCamionesFalse();
 		app.setVerPlantasTrue();
@@ -142,6 +151,7 @@ public class RutaGui {
 	}
 	
 	public void pantallaAgregarRuta(App app) {
+		app.desactivarMenu();
 		
 		JPanel panel=new JPanel(new GridBagLayout());
 		
@@ -281,6 +291,152 @@ public class RutaGui {
 		
 	}
 	
+	private void pantallaModificarRuta (App app,Object atributos[]) {
+
+		app.desactivarMenu();
+		
+		JPanel panel=new JPanel(new GridBagLayout());
+		
+		JLabel etiquetaIdRuta = new JLabel("ID Ruta:");
+		JLabel etiquetaPlantaOrigen = new JLabel("Planta Origen:");
+		JLabel etiquetaPlantaDestino = new JLabel("Planta Destino:");
+		JLabel etiquetaDistanciaEnKm = new JLabel("Distancia(KM):");
+		JLabel etiquetaDuracion = new JLabel("Duracion(hs);");
+		JLabel etiquetaPeso = new JLabel("Peso maximo(Kg):");
+		
+		JComboBox<Planta> listaPlantasOrigen = new JComboBox<Planta>();
+		JComboBox<Planta> listaPlantasDestino = new JComboBox<Planta>();
+		
+		JTextField ingresarIdRuta = new JTextField(atributos[0].toString());
+		JTextField ingresarDistanciaEnKm = new JTextField(atributos[3].toString());
+		JTextField ingresarDuracion = new JTextField(atributos[4].toString());
+		JTextField ingresarPeso = new JTextField(atributos[5].toString());
+		
+		JButton cancelar = new JButton("Cancelar");
+		JButton agregar = new JButton("Modificar Ruta");
+
+		
+		PlantaDao pd = new PlantaDaoPostgreSql();
+		List<Planta> listaAux = pd.buscarTodos();
+		
+		for(Planta unaPlanta : listaAux) {
+			listaPlantasOrigen.addItem(unaPlanta);
+			listaPlantasDestino.addItem(unaPlanta);
+		}
+		
+		
+		
+		cancelar.addActionListener( e-> {
+			pantallaPrincipalRutas(app);
+		});
+		
+		agregar.addActionListener( e-> {
+			
+			Planta pOrigen = (Planta) listaPlantasOrigen.getSelectedItem();
+			Planta pDestino = (Planta) listaPlantasDestino.getSelectedItem();
+			Integer idRuta = Integer.parseInt(ingresarIdRuta.getText());
+			String distancia = ingresarDistanciaEnKm.getText();
+			String duracion = ingresarDuracion.getText();
+			String peso = ingresarPeso.getText();
+			
+			RutaController rc = new RutaController();
+			
+			try {
+				rc.modificarRuta(idRuta,pOrigen,pDestino,distancia,duracion,peso);
+				JOptionPane.showMessageDialog(panel,"La ruta fue agregada correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+				this.pantallaPrincipalRutas(app);
+			} catch (FormatoNumericoException | CampoVacioException | MismaPlantaException e1) {
+				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+			
+		});
+		
+
+		app.gbc.gridx=0;
+		app.gbc.gridy=0;
+		app.gbc.gridwidth=1;
+		app.gbc.gridheight=1;
+		panel.add(etiquetaIdRuta,app.gbc);
+		
+		app.gbc.gridx=1;
+		app.gbc.gridwidth=3;
+		app.gbc.fill=GridBagConstraints.HORIZONTAL;
+		panel.add(ingresarIdRuta,app.gbc);
+		
+		app.gbc.gridx=0;
+		app.gbc.gridy=1;
+		app.gbc.gridwidth=1;
+		app.gbc.gridheight=1;
+		app.gbc.fill=GridBagConstraints.NONE;
+		panel.add(etiquetaPlantaOrigen,app.gbc);
+		
+		app.gbc.gridx=1;
+		app.gbc.gridwidth=3;
+		app.gbc.fill=GridBagConstraints.BOTH;
+		panel.add(listaPlantasOrigen,app.gbc);
+		
+		app.gbc.gridx=0;
+		app.gbc.gridy=2;
+		app.gbc.gridwidth=1;
+		app.gbc.fill=GridBagConstraints.NONE;
+		panel.add(etiquetaPlantaDestino,app.gbc);
+		
+		app.gbc.gridx=1;
+		app.gbc.gridwidth=3;
+		app.gbc.fill=GridBagConstraints.BOTH;
+		panel.add(listaPlantasDestino,app.gbc);
+		
+		app.gbc.gridx=0;
+		app.gbc.gridy=3;
+		app.gbc.gridwidth=1;
+		app.gbc.fill=GridBagConstraints.NONE;
+		panel.add(etiquetaDistanciaEnKm,app.gbc);
+		
+		app.gbc.gridx=1;
+		app.gbc.gridwidth=3;
+		app.gbc.fill=GridBagConstraints.HORIZONTAL;
+		panel.add(ingresarDistanciaEnKm,app.gbc);
+		
+		app.gbc.gridx=0;
+		app.gbc.gridy=4;
+		app.gbc.gridwidth=1;
+		app.gbc.fill=GridBagConstraints.NONE;
+		panel.add(etiquetaDuracion,app.gbc);
+		
+		app.gbc.gridx=1;
+		app.gbc.gridwidth=3;
+		app.gbc.fill=GridBagConstraints.HORIZONTAL;
+		panel.add(ingresarDuracion,app.gbc);
+		
+		app.gbc.gridx=0;
+		app.gbc.gridy=5;
+		app.gbc.gridwidth=1;
+		app.gbc.fill=GridBagConstraints.NONE;
+		panel.add(etiquetaPeso,app.gbc);
+		
+		app.gbc.gridx=1;
+		app.gbc.gridwidth=3;
+		app.gbc.fill=GridBagConstraints.HORIZONTAL;
+		panel.add(ingresarPeso,app.gbc);
+		
+		
+		
+		app.gbc.gridx=2;
+		app.gbc.gridy=6;
+		app.gbc.gridwidth=1;
+		app.gbc.gridheight=1;
+		panel.add(cancelar,app.gbc);
+		
+		app.gbc.gridx=3;
+		panel.add(agregar,app.gbc);
+		
+		
+		app.resetGbc();
+		app.setContentPane(panel);
+		app.revalidate();
+		app.repaint();
+
+	}
 	
 	
 	private JTable dibujarTablaRutas() {
