@@ -10,10 +10,10 @@ import java.util.List;
 import frsf.isi.died.dao.utils.DB;
 import frsf.isi.died.dominio.Insumo;
 import frsf.isi.died.dominio.InsumoGeneral;
-import frsf.isi.died.dominio.Planta;
-import frsf.isi.died.dominio.util.UnidadDeMedida;
+import frsf.isi.died.dominio.InsumoLiquido;
 
-public class InsumoGeneralDaoPostgreSql implements InsumoGeneralDao{
+public class InsumoLiquidoDaoPostgreSql implements InsumoLiquidoDao {
+
 
 	
 	private static final String SELECT_ALL_INSUMO_GENERAL =
@@ -39,15 +39,15 @@ public class InsumoGeneralDaoPostgreSql implements InsumoGeneralDao{
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				
-				Insumo ig = new InsumoGeneral(
+				Insumo il = new InsumoLiquido(
 						(rs.getInt("idInsumo")),
 						(rs.getString("descripcion")),
 						(rs.getString("undidad")),
 						(rs.getDouble("costoXinsumo")),
-						(rs.getDouble("peso"))
+						(rs.getDouble("densidad"))
 						);
 
-				lista.add(ig);
+				lista.add(il);
 
 			}			
 		} catch (SQLException e) {
@@ -72,7 +72,7 @@ public class InsumoGeneralDaoPostgreSql implements InsumoGeneralDao{
 
 
 	@Override
-	public InsumoGeneral save(Insumo ig) {
+	public InsumoLiquido save(Insumo il) {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		try {
@@ -80,12 +80,12 @@ public class InsumoGeneralDaoPostgreSql implements InsumoGeneralDao{
 			System.out.println("EJECUTA INSERT");
 			pstmt= conn.prepareStatement(INSERT_INSUMO_GENERAL);
 			
-			pstmt.setInt(1,ig.getIdInsumo());
-			pstmt.setString(2, ig.getDescripcion());
-			pstmt.setString(3, ig.getUnidadDeMedida());
-			pstmt.setDouble(4, ig.getCostoUnidadMedida());
-			pstmt.setInt(5, ig.getIdInsumo());
-			pstmt.setDouble(6, ig.pesoPorUnidad());
+			pstmt.setInt(1,il.getIdInsumo());
+			pstmt.setString(2, il.getDescripcion());
+			pstmt.setString(3, il.getUnidadDeMedida());
+			pstmt.setDouble(4, il.getCostoUnidadMedida());
+			pstmt.setInt(5, il.getIdInsumo());
+			pstmt.setDouble(6, il.pesoPorUnidad());
 			
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -99,12 +99,12 @@ public class InsumoGeneralDaoPostgreSql implements InsumoGeneralDao{
 			}
 		}
 	
-		return (InsumoGeneral) ig;
+		return (InsumoLiquido) il;
 	}
 //
 //
 //	@Override
-//	public InsumoGeneral update(InsumoGeneral p) {
+//	public InsumoLiquido update(InsumoLiquido p) {
 //	
 //		Connection conn = DB.getConexion();
 //		PreparedStatement pstmt = null;
@@ -161,4 +161,3 @@ public class InsumoGeneralDaoPostgreSql implements InsumoGeneralDao{
 //	}
 	
 }
-
