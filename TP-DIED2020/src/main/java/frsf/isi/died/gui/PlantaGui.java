@@ -47,12 +47,13 @@ public class PlantaGui {
 		JLabel tituloPlantas=new JLabel("LISTA DE PLANTAS - Empresa x");
 		JLabel filtrar = new JLabel("Filtar:");
 		
-		JTextField campoTexto = new JTextField(20);
+		JTextField campoTexto = new JTextField(15);
 		
-		JButton boton3 = new JButton ("Buscar");
-		JButton boton1 = new JButton("Agregar Planta");
-		JButton boton2 = new JButton("Ver Pedidos");
-		JButton botonInsumos = new JButton("Ver Insumos");
+		JButton botonBuscar = new JButton ("Buscar");
+		JButton botonAgregarPlanta = new JButton("Agregar Planta");
+		JButton botonEliminarPlanta = new JButton("Eliminar Planta");
+		JButton botonVerStock = new JButton("Ver Stock");
+		JButton botonVerPedidos = new JButton("Ver Pedidos");
 		JButton botonEditar = new JButton("Editar");
 		JButton botonRutas = new JButton("Ver Rutas");
 		
@@ -78,7 +79,7 @@ public class PlantaGui {
 		   });
 		
 	
-		boton1.addActionListener( e-> {
+		botonAgregarPlanta.addActionListener( e-> {
 			pantallaAgregarPlanta(app);
 		});
 		
@@ -98,7 +99,7 @@ public class PlantaGui {
 
 		app.gbc.gridx = 0;
 		app.gbc.gridy = 0;
-		app.gbc.gridwidth=3;
+		app.gbc.gridwidth=6;
 		app.gbc.gridheight=1;
 		panel.add(tituloPlantas,app.gbc);
 		
@@ -118,11 +119,11 @@ public class PlantaGui {
 		app.gbc.gridy = 1;
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
-		panel.add(boton3,app.gbc);
+		panel.add(botonBuscar,app.gbc);
 			
 		app.gbc.gridx = 0;
 		app.gbc.gridy = 2;
-		app.gbc.gridwidth=6;
+		app.gbc.gridwidth=7;
 		app.gbc.gridheight=1;
 		app.gbc.weightx=0.1;
 		app.gbc.fill=GridBagConstraints.HORIZONTAL;
@@ -138,40 +139,43 @@ public class PlantaGui {
 		app.gbc.fill=GridBagConstraints.NONE;
 		app.gbc.anchor=GridBagConstraints.FIRST_LINE_END;
 		
-		panel.add(boton1,app.gbc);
+		panel.add(botonAgregarPlanta,app.gbc);
 		
 		app.gbc.gridx=1;
 		app.gbc.gridy = 4;
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
 		app.gbc.fill=GridBagConstraints.NONE;
-		
 		panel.add(botonEditar,app.gbc);
-		
 		
 		app.gbc.gridx=2;
 		app.gbc.gridy = 4;
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
 		app.gbc.fill=GridBagConstraints.NONE;
-		panel.add(boton2,app.gbc);
+		panel.add(botonEliminarPlanta,app.gbc);
 		
 		app.gbc.gridx=3;
 		app.gbc.gridy = 4;
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
-		app.gbc.fill=GridBagConstraints.NONE;
-
-		panel.add(botonRutas,app.gbc);
+		panel.add(botonVerStock, app.gbc);
+		
 		
 		app.gbc.gridx=4;
 		app.gbc.gridy = 4;
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
-		panel.add(botonInsumos, app.gbc);
+		panel.add(botonVerPedidos, app.gbc);
 		
+		
+		app.gbc.gridx=5;
+		app.gbc.gridy = 4;
+		app.gbc.gridwidth=1;
+		app.gbc.gridheight=1;
+		app.gbc.fill=GridBagConstraints.NONE;
+		panel.add(botonRutas,app.gbc);
 
-		
 		app.resetGbc();
 		app.setVerPlantasFalse();
 		app.setVerCamionesTrue();
