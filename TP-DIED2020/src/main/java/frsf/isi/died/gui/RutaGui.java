@@ -32,6 +32,7 @@ import frsf.isi.died.exceptions.FormatoNumericoException;
 import frsf.isi.died.exceptions.IdUtilizadoException;
 import frsf.isi.died.exceptions.LongitudException;
 import frsf.isi.died.exceptions.MismaPlantaException;
+import frsf.isi.died.gui.util.MiModelo;
 
 public class RutaGui {
 
@@ -441,13 +442,6 @@ public class RutaGui {
 	
 	private JTable dibujarTablaRutas() {
 		
-		class MiModelo extends DefaultTableModel	{
-			private static final long serialVersionUID = 1L;
-
-		public boolean isCellEditable (int row, int column) {
-		       return false;
-		   }
-		}
 		
 		MiModelo modelo = new MiModelo();	
 		

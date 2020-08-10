@@ -10,6 +10,7 @@ public interface InsumoLiquidoDao {
 	public void update(Insumo il);
 	public void delete(Integer id);
 	public List<Insumo> buscarTodos();
+	public List<Integer> obtenerIdsAllInsumos();
 
 
 }

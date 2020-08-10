@@ -24,10 +24,14 @@ import frsf.isi.died.controller.InsumoLiquidoController;
 import frsf.isi.died.controller.PlantaController;
 import frsf.isi.died.dao.InsumoGeneralDao;
 import frsf.isi.died.dao.InsumoGeneralDaoPostgreSql;
+import frsf.isi.died.dao.InsumoLiquidoDao;
+import frsf.isi.died.dao.InsumoLiquidoDaoPostgreSql;
 import frsf.isi.died.dominio.Insumo;
+import frsf.isi.died.dominio.InsumoLiquido;
 import frsf.isi.died.dominio.util.UnidadDeMedida;
 import frsf.isi.died.exceptions.CampoVacioException;
 import frsf.isi.died.exceptions.FormatoNumericoException;
+import frsf.isi.died.exceptions.IdUtilizadoException;
 import frsf.isi.died.exceptions.LongitudException;
 
 public class InsumoLiquidoGui {
@@ -208,12 +212,12 @@ public class InsumoLiquidoGui {
 //			
 			try {
 				igc.agregarInsumoLiquido(id,descripcion,unidad,costoXinsumo,densidad);
-			} catch (CampoVacioException | FormatoNumericoException | LongitudException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(panel,"El insumo fue agregado correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+				this.pantallaPrincipalInsumoLiquido(app);
+			} catch (CampoVacioException | FormatoNumericoException | LongitudException | IdUtilizadoException e1) {
+				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
-			JOptionPane.showMessageDialog(panel,"El insumo fue agregado correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-			this.pantallaPrincipalInsumoLiquido(app);
+			
 			
 //			try {
 //				pc.agregarPlanta(id, planta, direc, tel);
@@ -441,8 +445,8 @@ public class InsumoLiquidoGui {
 		modeloColumna.getColumn(4).setPreferredWidth(100);
 		
 		
-		InsumoGeneralDao igd= new InsumoGeneralDaoPostgreSql();
-		List<Insumo> insumosL = igd.buscarTodos();
+		InsumoLiquidoDao ild= new InsumoLiquidoDaoPostgreSql();
+		List<Insumo> insumosL = ild.buscarTodos();
 		
 		
 		for(Insumo unInsumo : insumosL) {

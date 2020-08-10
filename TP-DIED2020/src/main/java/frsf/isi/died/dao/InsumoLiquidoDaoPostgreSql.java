@@ -20,14 +20,18 @@ public class InsumoLiquidoDaoPostgreSql implements InsumoLiquidoDao{
 			+ " WHERE INSUMO.idInsumo = LIQUIDO.idInsumoLiquido";
 	private static final String INSERT_INSUMO_LIQUIDO  =
 			"INSERT INTO trabajoPractico.INSUMO (IdInsumo,descripcion,undidad,costoXinsumo) VALUES (?,?,?,?);"
-			+ " INSERT INTO trabajoPractico.GENERAL (idInsumoLiquido,densidad) VALUES (?,?)";
+			+ " INSERT INTO trabajoPractico.LIQUIDO (idInsumoLiquido,densidad) VALUES (?,?)";
 	private static final String UPDATE_INSUMO_LIQUIDO  =
 			" UPDATE trabajoPractico.INSUMO SET descripcion = ? , undidad =? , costoXinsumo= =?"
 			+ " WHERE IdInsumo = ? ;"
-			+ "UPDATE trabajoPractico.GENERAL SET  densidad =? "
+			+ "UPDATE trabajoPractico.LIQUIDO SET  densidad =? "
 			+ " WHERE idInsumoLiquido=?";
 	private static final String DELETE_INSUMO_LIQUIDO  =
 			"DELETE FROM trabajoPractico.INSUMO WHERE idInsumo= ? DELETE ON CASCADE";
+	private static final String SELECT_ALL_ID_INSUMO =
+			"SELECT INSUMO.idInsumo FROM trabajoPractico.INSUMO";
+	
+	
 	
 	
 	@Override
@@ -162,6 +166,39 @@ public class InsumoLiquidoDaoPostgreSql implements InsumoLiquidoDao{
 			}
 		}
 		
+	}
+
+
+	@Override
+	public List<Integer> obtenerIdsAllInsumos() {
+		List<Integer> lista = new ArrayList<Integer>();
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try { 
+
+			pstmt= conn.prepareStatement(SELECT_ALL_ID_INSUMO);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {	
+
+				lista.add(rs.getInt("idInsumo"));
+
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}	
+		
+		System.out.println("Resultado "+lista);
+		
+		return lista;
 	}
 	
 }

@@ -50,7 +50,10 @@ public abstract class Insumo {
 		return 0;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return ("ID:" + IdInsumo + "  Nombre:" + descripcion);
+	}
 	
 	
 }

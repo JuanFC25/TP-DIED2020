@@ -30,6 +30,9 @@ public class InsumoGeneralDaoPostgreSql implements InsumoGeneralDao{
 	private static final String DELETE_INSUMO_GENERAL =
 			"DELETE FROM trabajoPractico.INSUMO WHERE idInsumo= ? DELETE ON CASCADE";
 	
+	private static final String SELECT_ALL_ID_INSUMO =
+			"SELECT INSUMO.idInsumo FROM trabajoPractico.INSUMO";
+	
 	public List<Insumo> buscarTodos() {
 		List<Insumo> lista = new ArrayList<Insumo>();
 		Connection conn = DB.getConexion();
@@ -159,6 +162,38 @@ public class InsumoGeneralDaoPostgreSql implements InsumoGeneralDao{
 			}
 		}
 		
+	}
+	
+	@Override
+	public List<Integer> obtenerIdsAllInsumos() {
+		List<Integer> lista = new ArrayList<Integer>();
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try { 
+
+			pstmt= conn.prepareStatement(SELECT_ALL_ID_INSUMO);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {	
+
+				lista.add(rs.getInt("idInsumo"));
+
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}	
+		
+		System.out.println("Resultado "+lista);
+		
+		return lista;
 	}
 	
 }

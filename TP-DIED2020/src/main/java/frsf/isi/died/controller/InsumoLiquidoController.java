@@ -5,6 +5,7 @@ import frsf.isi.died.dominio.InsumoGeneral;
 import frsf.isi.died.dominio.InsumoLiquido;
 import frsf.isi.died.exceptions.CampoVacioException;
 import frsf.isi.died.exceptions.FormatoNumericoException;
+import frsf.isi.died.exceptions.IdUtilizadoException;
 import frsf.isi.died.exceptions.LongitudException;
 import frsf.isi.died.services.InsumoGeneralService;
 import frsf.isi.died.services.InsumoLiquidoService;
@@ -13,7 +14,7 @@ public class InsumoLiquidoController {
 	
 	
 	public void agregarInsumoLiquido(String id, String descripcion, String unidad, String costoXinsumo, String densidad) 
-			throws CampoVacioException, FormatoNumericoException, LongitudException {
+			throws CampoVacioException, FormatoNumericoException, LongitudException, IdUtilizadoException {
 
 		this.verificarId(id);
 		//this.verificarDescripcion(descripcion);
@@ -72,8 +73,6 @@ public class InsumoLiquidoController {
 			 throw new FormatoNumericoException("COSTO");
 		}
 	}
-	
-	//private void verificarUnidad(unidad) {};
-	
+
 
 }

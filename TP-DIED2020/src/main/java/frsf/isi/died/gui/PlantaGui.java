@@ -21,8 +21,13 @@ import javax.swing.table.TableRowSorter;
 
 import frsf.isi.died.app.App;
 import frsf.isi.died.controller.PlantaController;
+import frsf.isi.died.dao.InsumoGeneralDao;
+import frsf.isi.died.dao.InsumoGeneralDaoPostgreSql;
+import frsf.isi.died.dao.InsumoLiquidoDao;
+import frsf.isi.died.dao.InsumoLiquidoDaoPostgreSql;
 import frsf.isi.died.dao.PlantaDao;
 import frsf.isi.died.dao.PlantaDaoPostgreSql;
+import frsf.isi.died.dominio.Insumo;
 import frsf.isi.died.dominio.Planta;
 import frsf.isi.died.exceptions.CampoVacioException;
 import frsf.isi.died.exceptions.FormatoNumericoException;
@@ -58,9 +63,7 @@ public class PlantaGui {
 		JButton botonRutas = new JButton("Ver Rutas"); //esta
 		
 		JTable tablaPlantas=this.dibujarTablaPlantas();
-		
-		
-		
+	    
 		
 		
 		tablaPlantas.addMouseListener(new MouseAdapter() 
@@ -104,16 +107,34 @@ public class PlantaGui {
 				JOptionPane.showMessageDialog(panel,"Seleccione una planta", "Error", JOptionPane.ERROR_MESSAGE);	
 			}
 			else {
-				PedidoGui pantallaPedidos = new PedidoGui();
 				
-				pantallaPedidos.agregarPedido(app,valorId,nombre,this);
-				
-				
+				InsumoGeneralDao igd = new InsumoGeneralDaoPostgreSql();
+				InsumoLiquidoDao ild = new InsumoLiquidoDaoPostgreSql();
+				List<Insumo> listaInsumos = igd.buscarTodos();
+				List<Insumo> listaAux = ild.buscarTodos();
+				for(Insumo unInsumo : listaAux) {
+					listaInsumos.add(unInsumo);
+				}
+				if(listaInsumos.isEmpty()) {
+					JOptionPane.showMessageDialog(panel,"No hay insumos en el sistema", "Error", JOptionPane.ERROR_MESSAGE);	
+				}
+				else {
+					PedidoGui pantallaPedidos = new PedidoGui();
+					pantallaPedidos.agregarPedido(app,valorId,nombre,this);
+				}
 			}
 		});
 		
 		
-		
+		botonVerStock.addActionListener( e -> {
+			if(plantaSeleccionada==false) {
+				JOptionPane.showMessageDialog(panel,"Seleccione una planta", "Error", JOptionPane.ERROR_MESSAGE);	
+			}
+			else {
+				StockGui pantallaStock = new StockGui();
+				pantallaStock.pantallaPrincipalStock(app, valorId);
+			}
+		});
 		
 		
 		

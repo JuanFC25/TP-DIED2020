@@ -32,6 +32,8 @@ import frsf.isi.died.gui.CamionGui;
 import frsf.isi.died.gui.InsumoGeneralGui;
 import frsf.isi.died.gui.InsumoGui;
 import frsf.isi.died.gui.InsumoLiquidoGui;
+import frsf.isi.died.gui.PedidoGui;
+//import frsf.isi.died.gui.InsumoLiquidoGui;
 import frsf.isi.died.gui.PlantaGui;
 
 public class App extends JFrame{
@@ -41,17 +43,19 @@ public class App extends JFrame{
 	private JMenu menuPlantas;
 	private JMenu menuCamiones;
 	private JMenu menuInsumos;
+	private JMenu menuPedidos;
 	private JMenuBar barraMenu;
 	private JMenuItem verPlantas;
 	private JMenuItem verCamiones;
 	private JMenuItem verInsumosGenerales;
 	private JMenuItem verInsumosLiquidos;
-	
+	private JMenuItem verPedidos;
 	
 	private PlantaGui pantallaPlantas;
 	private CamionGui pantallaCamiones;
 	private InsumoGeneralGui pantallaInsumosGenerales;
 	private InsumoLiquidoGui pantallaInsumosLiquidos;
+	private PedidoGui pantallaPedidos;
 	
 	private void armarApp() {
 		
@@ -59,18 +63,20 @@ public class App extends JFrame{
 		this.menuPlantas = new JMenu("Planta");
 		this.menuCamiones = new JMenu("Camion");
 		this.menuInsumos = new JMenu("Insumo");
+		this.menuPedidos = new JMenu("Pedido");
 		this.barraMenu = new JMenuBar();
 		this.gbc = new GridBagConstraints();
 		this.verPlantas = new JMenuItem("Ver plantas");
 		this.verCamiones = new JMenuItem("Ver camiones");
 		this.verInsumosGenerales = new JMenuItem("Insumos Generales");
 		this.verInsumosLiquidos = new JMenuItem("Insumos Liquidos");
+		this.verPedidos = new JMenuItem("Ver pedidos");
 		
 		this.pantallaPlantas = new PlantaGui();
 		this.pantallaCamiones= new CamionGui();
 		this.pantallaInsumosGenerales = new InsumoGeneralGui();
 		this.pantallaInsumosLiquidos= new InsumoLiquidoGui();
-		
+		this.pantallaPedidos = new PedidoGui();
 		
 		pantallaPlantas.pantallaPrincipalPlantas(this);
 		
@@ -110,14 +116,20 @@ public class App extends JFrame{
 			this.repaint();
 		});
 		
+		verPedidos.addActionListener( e-> {
+			pantallaPedidos.pantallaPrincipalPedido(this);
+		});
+		
 		
 		menuPlantas.add(verPlantas);
 		menuCamiones.add(verCamiones);
 		menuInsumos.add(verInsumosGenerales);
 		menuInsumos.add(verInsumosLiquidos);
+		menuPedidos.add(verPedidos);
 		barraMenu.add(menuPlantas);
 		barraMenu.add(menuInsumos);
 		barraMenu.add(menuCamiones);
+		barraMenu.add(menuPedidos);
 		this.setJMenuBar(barraMenu);
 		
 	}

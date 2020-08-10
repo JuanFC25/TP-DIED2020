@@ -23,6 +23,17 @@ public class Pedido {
 		this.fechaEntrega = fechaEntrega;
 		this.estado = estado;
 	}
+	
+	public Pedido(Integer idPedido, Integer idPlantaDestino, Date fechaSolicitud,
+			Date fechaEntrega) {
+		this.idPedido = idPedido;
+		this.idPlantaDestino = idPlantaDestino;
+		this.idPlantaOrigen = null;
+		this.fechaSolicitud = fechaSolicitud;
+		this.fechaEntrega = fechaEntrega;
+		this.estado = "CREADA";
+	}
+	
 
 	public Integer getIdPedido() {
 		return idPedido;

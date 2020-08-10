@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +74,7 @@ public class PedidoDaoPostgreSql implements PedidoDao{
 			pstmt= conn.prepareStatement(INSERT_PEDIDO);
 			
 			pstmt.setInt(1, p.getIdPedido());
-			pstmt.setInt(2, p.getIdPlantaOrigen());
+			pstmt.setNull(2, Types.INTEGER);
 			pstmt.setInt(3, p.getIdPlantaDestino());
 			pstmt.setDate(4,new Date(p.getFechaSolicitud().getTime()));
 			pstmt.setDate(5, new Date(p.getFechaEntrega().getTime()));

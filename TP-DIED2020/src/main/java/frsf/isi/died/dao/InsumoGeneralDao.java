@@ -9,4 +9,5 @@ public interface InsumoGeneralDao {
 	public Insumo save(Insumo p) ;
 	public void update(Insumo ig);
 	public void delete(Integer id);
+	public List<Integer> obtenerIdsAllInsumos();
 }
