@@ -215,7 +215,12 @@ public class InsumoGeneralGui {
 			
 			InsumoGeneralController igc = new InsumoGeneralController();
 //			
-			igc.agregarInsumoGeneral(id,descripcion,unidad,costoXinsumo,peso);
+			try {
+				igc.agregarInsumoGeneral(id,descripcion,unidad,costoXinsumo,peso);
+			} catch (FormatoNumericoException | LongitudException | CampoVacioException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			JOptionPane.showMessageDialog(panel,"El insumo fue correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 			this.pantallaPrincipalInsumoGeneral(app);
 			

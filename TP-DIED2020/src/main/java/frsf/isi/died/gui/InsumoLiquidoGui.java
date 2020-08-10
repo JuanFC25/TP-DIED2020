@@ -206,7 +206,12 @@ public class InsumoLiquidoGui {
 			
 			InsumoLiquidoController igc = new InsumoLiquidoController();
 //			
-			igc.agregarInsumoLiquido(id,descripcion,unidad,costoXinsumo,densidad);
+			try {
+				igc.agregarInsumoLiquido(id,descripcion,unidad,costoXinsumo,densidad);
+			} catch (CampoVacioException | FormatoNumericoException | LongitudException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			JOptionPane.showMessageDialog(panel,"El insumo fue agregado correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 			this.pantallaPrincipalInsumoLiquido(app);
 			

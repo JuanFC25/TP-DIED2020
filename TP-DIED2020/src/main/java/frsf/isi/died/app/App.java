@@ -91,6 +91,7 @@ public class App extends JFrame{
 			this.repaint();
 		}); // pantallaPrincipalInsumoGeneral
 		
+
 		verInsumosLiquidos.addActionListener(e->{
 		
 			pantallaInsumosLiquidos.pantallaPrincipalInsumoLiquido(this);

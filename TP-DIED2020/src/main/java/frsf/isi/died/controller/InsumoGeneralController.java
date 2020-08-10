@@ -11,7 +11,7 @@ public class InsumoGeneralController {
 
 	
 	public void agregarInsumoGeneral(String id, String descripcion, String unidad, String costoXinsumo, String peso) throws FormatoNumericoException, LongitudException, CampoVacioException {
-		
+		//asd
 		this.verificarId(id);
 		//this.verificarDescripcion(descripcion);
 		//this.verificarUnidad(unidad);
