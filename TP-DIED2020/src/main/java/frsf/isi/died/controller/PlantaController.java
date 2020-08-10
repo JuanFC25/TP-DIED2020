@@ -21,6 +21,7 @@ public class PlantaController {
 		verificarNombre(nombre);
 		verificarDireccion(direccion);
 		verificarTelefono(telefono);
+	
 		Planta p = new Planta(
 				Integer.parseInt(id),
 				nombre, direccion,

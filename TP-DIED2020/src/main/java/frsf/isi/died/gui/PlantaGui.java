@@ -34,7 +34,7 @@ public class PlantaGui {
 
 	Integer valorId,telefono;
 	String nombre,direccion;
-	
+	Boolean plantaSeleccionada=false;
 	
 	public void pantallaPrincipalPlantas(App app) {
 		
@@ -50,16 +50,15 @@ public class PlantaGui {
 		JTextField campoTexto = new JTextField(15);
 		
 		JButton botonBuscar = new JButton ("Buscar");
-		JButton botonAgregarPlanta = new JButton("Agregar Planta");
-		JButton botonEliminarPlanta = new JButton("Eliminar Planta");
-		JButton botonVerStock = new JButton("Ver Stock");
-		JButton botonVerPedidos = new JButton("Ver Pedidos");
-		JButton botonEditar = new JButton("Editar");
-		JButton botonRutas = new JButton("Ver Rutas");
+		JButton botonAgregarPlanta = new JButton("Agregar Planta"); //esta
+		JButton botonEliminarPlanta = new JButton("Eliminar Planta"); 
+		JButton botonVerStock = new JButton("Ver Stock"); 
+		JButton botonVerPedidos = new JButton("Agregar Pedido"); 
+		JButton botonEditar = new JButton("Editar"); //esta
+		JButton botonRutas = new JButton("Ver Rutas"); //esta
 		
 		JTable tablaPlantas=this.dibujarTablaPlantas();
 		
-		valorId=0;
 		
 		
 		
@@ -70,11 +69,13 @@ public class PlantaGui {
 		      {
 		         int fila = tablaPlantas.rowAtPoint(e.getPoint());
 		         int columna = tablaPlantas.columnAtPoint(e.getPoint());
-		         if ((fila > -1) && (columna > -1))
+		         if ((fila > -1) && (columna > -1)) {
+		        	plantaSeleccionada=true;
 		            valorId = (Integer) tablaPlantas.getValueAt(fila,0);
 		         	nombre = (String) tablaPlantas.getValueAt(fila, 1);
 		         	direccion = (String) tablaPlantas.getValueAt(fila, 2);
 		         	telefono = (Integer) tablaPlantas.getValueAt(fila,3);
+		         }
 		      }
 		   });
 		
@@ -83,8 +84,9 @@ public class PlantaGui {
 			pantallaAgregarPlanta(app);
 		});
 		
+		
 		botonEditar.addActionListener( e-> {
-			if(valorId == 0) {
+			if(plantaSeleccionada==false) {
 				JOptionPane.showMessageDialog(panel,"Seleccione una planta", "Error", JOptionPane.ERROR_MESSAGE);	
 			}
 			else {
@@ -97,6 +99,27 @@ public class PlantaGui {
 			pantallaRutas.pantallaPrincipalRutas(app);
 		});
 
+		botonVerPedidos.addActionListener( e-> {
+			if(plantaSeleccionada==false) {
+				JOptionPane.showMessageDialog(panel,"Seleccione una planta", "Error", JOptionPane.ERROR_MESSAGE);	
+			}
+			else {
+				PedidoGui pantallaPedidos = new PedidoGui();
+				
+				pantallaPedidos.agregarPedido(app,valorId,nombre,this);
+				
+				
+			}
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		app.gbc.gridx = 0;
 		app.gbc.gridy = 0;
 		app.gbc.gridwidth=6;
