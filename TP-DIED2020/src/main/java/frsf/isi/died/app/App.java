@@ -31,7 +31,7 @@ import javax.swing.table.TableRowSorter;
 import frsf.isi.died.gui.CamionGui;
 import frsf.isi.died.gui.InsumoGeneralGui;
 import frsf.isi.died.gui.InsumoGui;
-import frsf.isi.died.gui.InsumoLuquidoGui;
+import frsf.isi.died.gui.InsumoLiquidoGui;
 import frsf.isi.died.gui.PlantaGui;
 
 public class App extends JFrame{
@@ -51,7 +51,7 @@ public class App extends JFrame{
 	private PlantaGui pantallaPlantas;
 	private CamionGui pantallaCamiones;
 	private InsumoGeneralGui pantallaInsumosGenerales;
-	private InsumoLuquidoGui pantallaInsumosLiquidos;
+	private InsumoLiquidoGui pantallaInsumosLiquidos;
 	
 	private void armarApp() {
 		
@@ -69,7 +69,7 @@ public class App extends JFrame{
 		this.pantallaPlantas = new PlantaGui();
 		this.pantallaCamiones= new CamionGui();
 		this.pantallaInsumosGenerales = new InsumoGeneralGui();
-		//this.pantallaInsumosLiquidos= new InsumoLiquidoGui();
+		this.pantallaInsumosLiquidos= new InsumoLiquidoGui();
 		
 		
 		pantallaPlantas.pantallaPrincipalPlantas(this);
@@ -91,13 +91,14 @@ public class App extends JFrame{
 			this.revalidate();
 			this.repaint();
 		}); // pantallaPrincipalInsumoGeneral
-		verInsumosLiquidos.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+		
+
+		verInsumosLiquidos.addActionListener(e->{
+		
+			pantallaInsumosLiquidos.pantallaPrincipalInsumoLiquido(this);
+	
+			this.revalidate();
+			this.repaint();
 		});
 		
 		verCamiones.addActionListener(e-> {

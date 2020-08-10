@@ -1,6 +1,5 @@
 package frsf.isi.died.gui;
 
-
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
@@ -13,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -22,25 +20,18 @@ import javax.swing.table.TableRowSorter;
 
 import frsf.isi.died.app.App;
 import frsf.isi.died.controller.InsumoGeneralController;
+import frsf.isi.died.controller.InsumoLiquidoController;
 import frsf.isi.died.controller.PlantaController;
 import frsf.isi.died.dao.InsumoGeneralDao;
 import frsf.isi.died.dao.InsumoGeneralDaoPostgreSql;
-import frsf.isi.died.dao.PlantaDao;
-import frsf.isi.died.dao.PlantaDaoPostgreSql;
 import frsf.isi.died.dominio.Insumo;
-import frsf.isi.died.dominio.InsumoGeneral;
-import frsf.isi.died.dominio.Planta;
 import frsf.isi.died.dominio.util.UnidadDeMedida;
 import frsf.isi.died.exceptions.CampoVacioException;
 import frsf.isi.died.exceptions.FormatoNumericoException;
-import frsf.isi.died.exceptions.IdUtilizadoException;
 import frsf.isi.died.exceptions.LongitudException;
 
-public class InsumoGeneralGui {
-//
-//	Integer valorId,telefono;
-//	String nombre,direccion;
-	
+public class InsumoLiquidoGui {
+
 	Integer IDInsumo;
 	Double costoUnidadMedida;
 	UnidadDeMedida unidadDeMedida;
@@ -49,36 +40,36 @@ public class InsumoGeneralGui {
 	
 	
 	
-	public void pantallaPrincipalInsumoGeneral(App app) {
+	public void pantallaPrincipalInsumoLiquido(App app) {
 		
 		app.activarMenu();
 		
 		JPanel panel=new JPanel(new GridBagLayout());
 		
 		JScrollPane scrollPlantas=new JScrollPane();
-		JLabel tituloPlantas=new JLabel("LISTA DE INSUMOS GENERALES - Empresa x");
+		JLabel tituloPlantas=new JLabel("LISTA DE INSUMOS LIQUIDOS - Empresa ABC");
 		JLabel filtrar = new JLabel("Filtar:");
 		JTextField campoTexto = new JTextField(20);
 		JButton boton3 = new JButton ("Buscar");
-		JButton boton1 = new JButton("Agregar Insumo General");
+		JButton boton1 = new JButton("Agregar Insumo Liquido");
 		JButton botonEditar = new JButton("Editar");
 		//valorId=0;
 		
 		
-		JTable tablaInsumosGenerales=this.dibujarTablaInsumosGenerales();
+		JTable tablaInsumosLiquidos=this.dibujarTablaInsumosLiquidos();
 		
-		tablaInsumosGenerales.addMouseListener(new MouseAdapter() 
+		tablaInsumosLiquidos.addMouseListener(new MouseAdapter() 
 		   {
 		      public void mouseClicked(MouseEvent e) 
 		      {
-		         int fila = tablaInsumosGenerales.rowAtPoint(e.getPoint());
-		         int columna = tablaInsumosGenerales.columnAtPoint(e.getPoint());
+		         int fila = tablaInsumosLiquidos.rowAtPoint(e.getPoint());
+		         int columna = tablaInsumosLiquidos.columnAtPoint(e.getPoint());
 		         if ((fila > -1) && (columna > -1))
 //		            valorId = (Integer) tablaInsumosGenerales.getValueAt(fila,0);
 //		         	nombre = (String) tablaInsumosGenerales.getValueAt(fila, 1);
 //		         	direccion = (String) tablaInsumosGenerales.getValueAt(fila, 2);
 //		         	telefono = (Integer) tablaInsumosGenerales.getValueAt(fila,3);
-		        	IDInsumo = (Integer) tablaInsumosGenerales.getValueAt(fila, 0);
+		        	IDInsumo = (Integer) tablaInsumosLiquidos.getValueAt(fila, 0);
 		        	
 		      }
 		   });
@@ -128,7 +119,7 @@ public class InsumoGeneralGui {
 		app.gbc.gridheight=1;
 		app.gbc.weightx=0.1;
 		app.gbc.fill=GridBagConstraints.HORIZONTAL;
-		scrollPlantas.setViewportView(tablaInsumosGenerales);
+		scrollPlantas.setViewportView(tablaInsumosLiquidos);
 		panel.add(scrollPlantas,app.gbc);
 		app.gbc.weightx=0;
 
@@ -188,21 +179,21 @@ public class InsumoGeneralGui {
 		JLabel etiquetaIdInsumo = new JLabel("ID: ");
 		JLabel etiquetaDescripcion=new JLabel("Descripcion: ");
 		JLabel etiquetaUnidad=new JLabel("Unidad: ");
-		JLabel etiquetaCostoXinsumo=new JLabel("Costo por Insumo: ");
-		JLabel etiquetaPeso=new JLabel("Peso: ");
+		JLabel etiquetaCostoXinsumo=new JLabel("Costo por Unidad: ");
+		JLabel etiquetaPeso=new JLabel("Densidad: ");
 		
 		JTextField ingresarIdInsumo = new JTextField(30);
 		JTextField ingresarDescripcion=new JTextField(30);
 		JTextField ingresarUnidad=new JTextField(30);
 		JTextField ingresarCostoXinsumo = new JTextField(30);
-		JTextField ingresarPeso = new JTextField(30);
+		JTextField ingresarDensidad = new JTextField(30);
 		
 		JButton cancelar = new JButton("Cancelar");
-		JButton agregar = new JButton("Agregar Planta");
+		JButton agregar = new JButton("Agregar");
 		
 		
 		cancelar.addActionListener( e -> {
-			this.pantallaPrincipalInsumoGeneral(app);
+			this.pantallaPrincipalInsumoLiquido(app);
 		});
 		
 		agregar.addActionListener( e -> {
@@ -211,18 +202,18 @@ public class InsumoGeneralGui {
 			String descripcion = ingresarDescripcion.getText();
 			String unidad = ingresarUnidad.getText();
 			String costoXinsumo = ingresarCostoXinsumo.getText();
-			String peso = ingresarPeso.getText();
+			String densidad = ingresarDensidad.getText();
 			
-			InsumoGeneralController igc = new InsumoGeneralController();
+			InsumoLiquidoController igc = new InsumoLiquidoController();
 //			
 			try {
-				igc.agregarInsumoGeneral(id,descripcion,unidad,costoXinsumo,peso);
-			} catch (FormatoNumericoException | LongitudException | CampoVacioException e1) {
+				igc.agregarInsumoLiquido(id,descripcion,unidad,costoXinsumo,densidad);
+			} catch (CampoVacioException | FormatoNumericoException | LongitudException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			JOptionPane.showMessageDialog(panel,"El insumo fue correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-			this.pantallaPrincipalInsumoGeneral(app);
+			JOptionPane.showMessageDialog(panel,"El insumo fue agregado correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+			this.pantallaPrincipalInsumoLiquido(app);
 			
 //			try {
 //				pc.agregarPlanta(id, planta, direc, tel);
@@ -285,7 +276,7 @@ public class InsumoGeneralGui {
 		
 		app.gbc.gridx=1;
 		app.gbc.gridwidth=3;
-		panel.add(ingresarPeso,app.gbc);
+		panel.add(ingresarDensidad,app.gbc);
 		
 		app.gbc.gridx=2;
 		app.gbc.gridy=5;
@@ -323,7 +314,7 @@ public class InsumoGeneralGui {
 		
 		
 		cancelar.addActionListener( e -> {
-			this.pantallaPrincipalInsumoGeneral(app);
+			this.pantallaPrincipalInsumoLiquido(app);
 		});
 		
 		agregar.addActionListener( e -> {
@@ -338,7 +329,7 @@ public class InsumoGeneralGui {
 			try {
 				pc.modificarPlanta(valorId, planta, direc, tel);
 				JOptionPane.showMessageDialog(panel,"La planta fue modificada correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-				this.pantallaPrincipalInsumoGeneral(app);
+				this.pantallaPrincipalInsumoLiquido(app);
 			} catch (CampoVacioException e1) {
 				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				e1.printStackTrace();
@@ -350,7 +341,7 @@ public class InsumoGeneralGui {
 				e1.printStackTrace();
 			}
 			
-			this.pantallaPrincipalInsumoGeneral(app);
+			this.pantallaPrincipalInsumoLiquido(app);
 		});
 		
 		
@@ -420,7 +411,7 @@ public class InsumoGeneralGui {
 	
 	
 	
-	private JTable dibujarTablaInsumosGenerales() {
+	private JTable dibujarTablaInsumosLiquidos() {
 		
 		class MiModelo extends DefaultTableModel	{
 			private static final long serialVersionUID = 1L;
@@ -436,13 +427,13 @@ public class InsumoGeneralGui {
 		modelo.addColumn("Descripcio");
 		modelo.addColumn("Unidad Medida");
 		modelo.addColumn("Costo por Unidad");
-		modelo.addColumn("Peso por Unidad");
+		modelo.addColumn("Densidad");
 	
-		JTable tablaInsumosG=new JTable(modelo);
+		JTable tablaInsumosL=new JTable(modelo);
 		TableRowSorter<TableModel> ordenador=new TableRowSorter<TableModel>(modelo);
-		tablaInsumosG.setRowSorter(ordenador);
+		tablaInsumosL.setRowSorter(ordenador);
 		
-		TableColumnModel modeloColumna = tablaInsumosG.getColumnModel();
+		TableColumnModel modeloColumna = tablaInsumosL.getColumnModel();
 		modeloColumna.getColumn(0).setPreferredWidth(100);
 		modeloColumna.getColumn(1).setPreferredWidth(100);
 		modeloColumna.getColumn(2).setPreferredWidth(100);
@@ -451,10 +442,10 @@ public class InsumoGeneralGui {
 		
 		
 		InsumoGeneralDao igd= new InsumoGeneralDaoPostgreSql();
-		List<Insumo> insumosG = igd.buscarTodos();
+		List<Insumo> insumosL = igd.buscarTodos();
 		
 		
-		for(Insumo unInsumo : insumosG) {
+		for(Insumo unInsumo : insumosL) {
 			Object fila[]= new Object [5];
 			fila[0]=unInsumo.getIdInsumo();
 			fila[1]=unInsumo.getDescripcion();
@@ -465,11 +456,7 @@ public class InsumoGeneralGui {
 		}
 		
 	
-		return tablaInsumosG;
+		return tablaInsumosL;
 	}
 	
-	
-	
 }
-
-

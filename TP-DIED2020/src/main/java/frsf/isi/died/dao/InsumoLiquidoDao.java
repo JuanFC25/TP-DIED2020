@@ -11,4 +11,5 @@ public interface InsumoLiquidoDao {
 	public void delete(Integer id);
 	public List<Insumo> buscarTodos();
 
+
 }

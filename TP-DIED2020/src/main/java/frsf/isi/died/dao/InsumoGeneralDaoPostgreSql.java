@@ -104,6 +104,7 @@ public class InsumoGeneralDaoPostgreSql implements InsumoGeneralDao{
 	}
 
 
+
 	@Override
 	public void update(Insumo ig) {
 	

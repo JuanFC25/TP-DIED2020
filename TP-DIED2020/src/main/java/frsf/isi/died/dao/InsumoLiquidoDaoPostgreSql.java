@@ -9,6 +9,7 @@ import java.util.List;
 
 import frsf.isi.died.dao.utils.DB;
 import frsf.isi.died.dominio.Insumo;
+
 import frsf.isi.died.dominio.InsumoLiquido;
 
 public class InsumoLiquidoDaoPostgreSql implements InsumoLiquidoDao{
@@ -36,6 +37,7 @@ public class InsumoLiquidoDaoPostgreSql implements InsumoLiquidoDao{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try { 
+
 			pstmt= conn.prepareStatement(SELECT_ALL_INSUMO_LIQUIDO);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -73,13 +75,16 @@ public class InsumoLiquidoDaoPostgreSql implements InsumoLiquidoDao{
 
 
 	@Override
+
 	public Insumo save(Insumo il) {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		try {
 			
 			System.out.println("EJECUTA INSERT");
+
 			pstmt= conn.prepareStatement(INSERT_INSUMO_LIQUIDO);
+
 			
 			pstmt.setInt(1,il.getIdInsumo());
 			pstmt.setString(2, il.getDescripcion());
@@ -134,8 +139,6 @@ public class InsumoLiquidoDaoPostgreSql implements InsumoLiquidoDao{
 				e.printStackTrace();
 			}
 		}
-			
-	
 	}
 
 	@Override
@@ -162,3 +165,4 @@ public class InsumoLiquidoDaoPostgreSql implements InsumoLiquidoDao{
 	}
 	
 }
+

@@ -2,32 +2,34 @@ package frsf.isi.died.controller;
 
 import frsf.isi.died.dominio.Insumo;
 import frsf.isi.died.dominio.InsumoGeneral;
+import frsf.isi.died.dominio.InsumoLiquido;
 import frsf.isi.died.exceptions.CampoVacioException;
 import frsf.isi.died.exceptions.FormatoNumericoException;
 import frsf.isi.died.exceptions.LongitudException;
 import frsf.isi.died.services.InsumoGeneralService;
+import frsf.isi.died.services.InsumoLiquidoService;
 
-public class InsumoGeneralController {
-
+public class InsumoLiquidoController {
 	
-	public void agregarInsumoGeneral(String id, String descripcion, String unidad, String costoXinsumo, String peso) throws FormatoNumericoException, LongitudException, CampoVacioException {
-		//asd
+	
+	public void agregarInsumoLiquido(String id, String descripcion, String unidad, String costoXinsumo, String densidad) 
+			throws CampoVacioException, FormatoNumericoException, LongitudException {
+
 		this.verificarId(id);
 		//this.verificarDescripcion(descripcion);
 		//this.verificarUnidad(unidad);
 		this.verificarCostoXInsumo(costoXinsumo);
-		this.verificarPeso(peso);
+		this.verificarDensidad(densidad);
 		
-		
-		Insumo ig = new InsumoGeneral(
+		Insumo il = new InsumoLiquido(
 				Integer.parseInt(id),
 				descripcion,
 				unidad,
 				Double.parseDouble(costoXinsumo),
-				Double.parseDouble(peso));
+				Double.parseDouble(densidad));
 		
-		InsumoGeneralService igs= new InsumoGeneralService();
-		igs.agregarInsumoGeneral(ig);
+		InsumoLiquidoService ils= new InsumoLiquidoService();
+		ils.agregarInsumoLiquido(il);
 	}
 	
 	//private void verificarDescripcion(String descripcion) {}
@@ -51,13 +53,13 @@ public class InsumoGeneralController {
 		if (cantidad != 4) throw new LongitudException("ID");
 	}
 	
-	private void verificarPeso(String p) throws CampoVacioException, FormatoNumericoException {
+	private void verificarDensidad(String d) throws CampoVacioException, FormatoNumericoException {
 		
-		if(p.length() == 0) throw new CampoVacioException("PESO");
+		if(d.length() == 0) throw new CampoVacioException("DENSIDAD");
 		try {
-			Double.parseDouble(p);
+			Double.parseDouble(d);
 		} catch (NumberFormatException e) {
-			 throw new FormatoNumericoException("PESO");
+			 throw new FormatoNumericoException("DENSIDAD");
 		}
 		
 	}
@@ -73,4 +75,5 @@ public class InsumoGeneralController {
 	
 	//private void verificarUnidad(unidad) {};
 	
+
 }

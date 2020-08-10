@@ -21,4 +21,5 @@ public class InsumoLiquido extends Insumo{
 	public double getDensidad() {
 		return densidadLiquido;
 	}
+
 }
