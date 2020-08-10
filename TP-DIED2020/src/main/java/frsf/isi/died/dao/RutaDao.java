@@ -10,4 +10,5 @@ public interface RutaDao {
 	public List<Integer> obtenerIds();
 	public void save(Ruta r);
 	public void delete(Integer id);
+	public void update(Ruta r);
 }

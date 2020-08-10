@@ -9,33 +9,36 @@ import java.util.List;
 
 import frsf.isi.died.dao.utils.DB;
 import frsf.isi.died.dominio.Insumo;
-import frsf.isi.died.dominio.InsumoGeneral;
+
 import frsf.isi.died.dominio.InsumoLiquido;
 
-public class InsumoLiquidoDaoPostgreSql implements InsumoLiquidoDao {
+public class InsumoLiquidoDaoPostgreSql implements InsumoLiquidoDao{
 
-
-	
-	private static final String SELECT_ALL_INSUMO_GENERAL =
-			"SELECT INSUMO.idInsumo,INSUMO.descripcion,INSUMO.undidad,INSUMO.costoXinsumo,GENERAL.peso"
-			+ " FROM trabajoPractico.INSUMO, trabajoPractico.GENERAL"
-			+ " WHERE INSUMO.idInsumo = GENERAL.idInsumoGeneral";
-	private static final String INSERT_INSUMO_GENERAL =
+	private static final String SELECT_ALL_INSUMO_LIQUIDO =
+			"SELECT INSUMO.idInsumo,INSUMO.descripcion,INSUMO.undidad,INSUMO.costoXinsumo,LIQUIDO.densidad"
+			+ " FROM trabajoPractico.INSUMO, trabajoPractico.LIQUIDO"
+			+ " WHERE INSUMO.idInsumo = LIQUIDO.idInsumoLiquido";
+	private static final String INSERT_INSUMO_LIQUIDO  =
 			"INSERT INTO trabajoPractico.INSUMO (IdInsumo,descripcion,undidad,costoXinsumo) VALUES (?,?,?,?);"
-			+ " INSERT INTO trabajoPractico.GENERAL (idInsumoGeneral,peso) VALUES (?,?)";
-//	private static final String UPDATE_PLANTA =
-//			" UPDATE trabajoPractico.PLANTA SET nombrePlanta =? ,direccion = ? , telefono =? "
-//			+ " WHERE idPlanta = ?";
-//	private static final String SELECT_ALL_IDPLANTA =
-//			"SELECT idPlanta FROM trabajoPractico.PLANTA";
+			+ " INSERT INTO trabajoPractico.GENERAL (idInsumoLiquido,densidad) VALUES (?,?)";
+	private static final String UPDATE_INSUMO_LIQUIDO  =
+			" UPDATE trabajoPractico.INSUMO SET descripcion = ? , undidad =? , costoXinsumo= =?"
+			+ " WHERE IdInsumo = ? ;"
+			+ "UPDATE trabajoPractico.GENERAL SET  densidad =? "
+			+ " WHERE idInsumoLiquido=?";
+	private static final String DELETE_INSUMO_LIQUIDO  =
+			"DELETE FROM trabajoPractico.INSUMO WHERE idInsumo= ? DELETE ON CASCADE";
 	
+	
+	@Override
 	public List<Insumo> buscarTodos() {
 		List<Insumo> lista = new ArrayList<Insumo>();
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try { 
-			pstmt= conn.prepareStatement(SELECT_ALL_INSUMO_GENERAL);
+
+			pstmt= conn.prepareStatement(SELECT_ALL_INSUMO_LIQUIDO);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				
@@ -72,20 +75,23 @@ public class InsumoLiquidoDaoPostgreSql implements InsumoLiquidoDao {
 
 
 	@Override
-	public InsumoLiquido save(Insumo il) {
+
+	public Insumo save(Insumo il) {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		try {
 			
 			System.out.println("EJECUTA INSERT");
-			pstmt= conn.prepareStatement(INSERT_INSUMO_GENERAL);
+
+			pstmt= conn.prepareStatement(INSERT_INSUMO_LIQUIDO);
+
 			
 			pstmt.setInt(1,il.getIdInsumo());
 			pstmt.setString(2, il.getDescripcion());
 			pstmt.setString(3, il.getUnidadDeMedida());
 			pstmt.setDouble(4, il.getCostoUnidadMedida());
 			pstmt.setInt(5, il.getIdInsumo());
-			pstmt.setDouble(6, il.pesoPorUnidad());
+			pstmt.setDouble(6, il.getDensidad());
 			
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -99,65 +105,64 @@ public class InsumoLiquidoDaoPostgreSql implements InsumoLiquidoDao {
 			}
 		}
 	
-		return (InsumoLiquido) il;
+		return  il;
 	}
-//
-//
-//	@Override
-//	public InsumoLiquido update(InsumoLiquido p) {
-//	
-//		Connection conn = DB.getConexion();
-//		PreparedStatement pstmt = null;
-//		try {
-//			System.out.println("EJECUTA UPDATE");
-//			pstmt= conn.prepareStatement(UPDATE_PLANTA);
-//			pstmt.setString(1, p.getNombrePlanta());
-//			pstmt.setString(2, p.getDireccion());
-//			pstmt.setInt(3, p.getTelefono());
-//			pstmt.setInt(4, p.getIdPlanta());
-//	
-//			pstmt.executeUpdate();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}finally {
-//			try {
-//				if(pstmt!=null) pstmt.close();
-//				if(conn!=null) conn.close();				
-//			}catch(SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//			
-//		return p;
-//	}
-//
-//
-//	@Override
-//	public List<Integer> obtenerIds() {
-//		List<Integer> lista = new ArrayList<Integer>();
-//		Connection conn = DB.getConexion();
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//		try {
-//			pstmt= conn.prepareStatement(SELECT_ALL_IDPLANTA);
-//			rs = pstmt.executeQuery();
-//			while(rs.next()) {
-//				lista.add(rs.getInt("idPlanta"));
-//			}			
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}finally {
-//			try {
-//				if(rs!=null) rs.close();
-//				if(pstmt!=null) pstmt.close();
-//				if(conn!=null) conn.close();				
-//			}catch(SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		System.out.println("Resultado "+lista);
-//		
-//		return lista;
-//	}
+
+
+	@Override
+	public void update(Insumo il) {
+	
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		try {
+			System.out.println("EJECUTA UPDATE");
+			
+			pstmt= conn.prepareStatement(UPDATE_INSUMO_LIQUIDO);
+			
+			
+			pstmt.setString(1, il.getDescripcion());
+			pstmt.setString(2, il.getUnidadDeMedida());
+			pstmt.setDouble(3, il.getCostoUnidadMedida());
+			pstmt.setInt(4, il.getIdInsumo());
+			pstmt.setDouble(6, il.getDensidad());
+			pstmt.setInt(1,il.getIdInsumo());
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void delete(Integer id) {
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		try {
+			
+			System.out.println("EJECUTA DELETE");
+			pstmt= conn.prepareStatement(DELETE_INSUMO_LIQUIDO);
+			pstmt.setInt(1,id);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
 	
 }
+

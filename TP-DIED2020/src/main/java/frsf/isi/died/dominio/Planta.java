@@ -16,7 +16,7 @@ public class Planta {
 	
 	
 	public Planta() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 

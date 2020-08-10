@@ -5,8 +5,11 @@ import java.util.List;
 import frsf.isi.died.dominio.Insumo;
 
 public interface InsumoLiquidoDao {
-	public List<Insumo> buscarTodos() ;
-	public Insumo save(Insumo p) ;
-//	public InsumoLiquido update(InsumoGeneral p) ;
-//	public List<Integer> obtenerIds();
+
+	public Insumo save(Insumo il);
+	public void update(Insumo il);
+	public void delete(Integer id);
+	public List<Insumo> buscarTodos();
+
+
 }

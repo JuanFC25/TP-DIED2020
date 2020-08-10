@@ -28,7 +28,7 @@ public class PlantaDaoPostgreSql implements PlantaDao{
 			+ " WHERE idPlanta = ?";
 	
 	private static final String DELETE_PLANTA =
-			"DELETE FROM trabajoPractico.PLANTA WHERE idPlanta = ?";
+			"DELETE FROM trabajoPractico.PLANTA WHERE idPlanta = ? DELETE ON CASCADE";
 	
 	public List<Planta> buscarTodos() {
 		List<Planta> lista = new ArrayList<Planta>();
@@ -192,5 +192,28 @@ public class PlantaDaoPostgreSql implements PlantaDao{
 
 	}
 	
+	@Override
+	public void delete(Integer id) {
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		try {
+			
+			System.out.println("EJECUTA DELETE");
+			pstmt= conn.prepareStatement(DELETE_PLANTA);
+			pstmt.setInt(1,id);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
 	
-}
+	
+	}

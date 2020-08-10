@@ -35,5 +35,13 @@ public class RutaService {
 		rd.delete(id);
 		
 	}
+
+
+	public void modificarRuta(Ruta r) {
+		RutaDao rd = new RutaDaoPostgreSql();
+		
+		rd.update(r);
+		
+	}
 	
 }

@@ -45,6 +45,10 @@ public abstract class Insumo {
 	 public Double pesoPorUnidad() {
 		return 0.0;
 	}
+	public double getDensidad() {
+	
+		return 0;
+	}
 	
 	
 	

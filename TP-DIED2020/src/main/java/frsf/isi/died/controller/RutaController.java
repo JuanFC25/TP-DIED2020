@@ -7,7 +7,6 @@ import frsf.isi.died.exceptions.FormatoNumericoException;
 import frsf.isi.died.exceptions.IdUtilizadoException;
 import frsf.isi.died.exceptions.LongitudException;
 import frsf.isi.died.exceptions.MismaPlantaException;
-import frsf.isi.died.services.CamionService;
 import frsf.isi.died.services.RutaService;
 
 public class RutaController {
@@ -32,6 +31,28 @@ public class RutaController {
 		RutaService rs = new RutaService();
 		rs.agregarRuta(r);
 		
+	}
+	
+	
+
+	public void modificarRuta(Integer idRuta, Planta pOrigen, Planta pDestino,
+			String distancia, String duracion,String peso) throws MismaPlantaException, 
+			CampoVacioException, FormatoNumericoException {
+		
+		verificarPlantas(pOrigen, pDestino);
+		verificarDistanciaEnKm(distancia);
+		verificarDuracion(duracion);
+		verificarPeso(peso);
+	
+		Ruta r = new Ruta(idRuta,
+				pOrigen.getIdPlanta(),
+				pDestino.getIdPlanta(),
+				Double.parseDouble(distancia),
+				Integer.parseInt(duracion),
+				Integer.parseInt(peso));
+	
+		RutaService rs = new RutaService();
+		rs.modificarRuta(r);
 	}
 
 	public void borrarRuta() {
@@ -66,7 +87,7 @@ public class RutaController {
 	private void verificarDistanciaEnKm(String cadena) throws CampoVacioException, FormatoNumericoException {
 		if(cadena.length()==0) throw new CampoVacioException("Distancia(KM)");
 		try {
-			Integer.parseInt(cadena);
+			Double.parseDouble(cadena);
         } catch (NumberFormatException excepcion) {
             throw new FormatoNumericoException("Distancia(KM)");
         }
@@ -99,5 +120,6 @@ public class RutaController {
 		cs.borrarRuta(id);
 		
 	}
+
 	
 }

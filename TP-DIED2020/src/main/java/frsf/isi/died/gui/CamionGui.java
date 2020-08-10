@@ -372,7 +372,7 @@ public class CamionGui {
 	private void pantallaModificarCamion(App app,Camion c) {
 		app.desactivarMenu();
 		
-JPanel panel=new JPanel(new GridBagLayout());
+		JPanel panel=new JPanel(new GridBagLayout());
 		
 		JLabel etiquetaIdCamion = new JLabel("ID: ");
 		JLabel etiquetaPatente=new JLabel("Patente: ");

@@ -28,12 +28,13 @@ import frsf.isi.died.exceptions.CampoVacioException;
 import frsf.isi.died.exceptions.FormatoNumericoException;
 import frsf.isi.died.exceptions.IdUtilizadoException;
 import frsf.isi.died.exceptions.LongitudException;
+import frsf.isi.died.gui.util.MiModelo;
 
 public class PlantaGui {
 
 	Integer valorId,telefono;
 	String nombre,direccion;
-	
+	Boolean plantaSeleccionada=false;
 	
 	public void pantallaPrincipalPlantas(App app) {
 		
@@ -46,18 +47,18 @@ public class PlantaGui {
 		JLabel tituloPlantas=new JLabel("LISTA DE PLANTAS - Empresa x");
 		JLabel filtrar = new JLabel("Filtar:");
 		
-		JTextField campoTexto = new JTextField(20);
+		JTextField campoTexto = new JTextField(15);
 		
-		JButton boton3 = new JButton ("Buscar");
-		JButton boton1 = new JButton("Agregar Planta");
-		JButton boton2 = new JButton("Ver Pedidos");
-		JButton botonInsumos = new JButton("Ver Insumos");
-		JButton botonEditar = new JButton("Editar");
-		JButton botonRutas = new JButton("Ver Rutas");
+		JButton botonBuscar = new JButton ("Buscar");
+		JButton botonAgregarPlanta = new JButton("Agregar Planta"); //esta
+		JButton botonEliminarPlanta = new JButton("Eliminar Planta"); 
+		JButton botonVerStock = new JButton("Ver Stock"); 
+		JButton botonVerPedidos = new JButton("Agregar Pedido"); 
+		JButton botonEditar = new JButton("Editar"); //esta
+		JButton botonRutas = new JButton("Ver Rutas"); //esta
 		
 		JTable tablaPlantas=this.dibujarTablaPlantas();
 		
-		valorId=0;
 		
 		
 		
@@ -68,21 +69,24 @@ public class PlantaGui {
 		      {
 		         int fila = tablaPlantas.rowAtPoint(e.getPoint());
 		         int columna = tablaPlantas.columnAtPoint(e.getPoint());
-		         if ((fila > -1) && (columna > -1))
+		         if ((fila > -1) && (columna > -1)) {
+		        	plantaSeleccionada=true;
 		            valorId = (Integer) tablaPlantas.getValueAt(fila,0);
 		         	nombre = (String) tablaPlantas.getValueAt(fila, 1);
 		         	direccion = (String) tablaPlantas.getValueAt(fila, 2);
 		         	telefono = (Integer) tablaPlantas.getValueAt(fila,3);
+		         }
 		      }
 		   });
 		
 	
-		boton1.addActionListener( e-> {
+		botonAgregarPlanta.addActionListener( e-> {
 			pantallaAgregarPlanta(app);
 		});
 		
+		
 		botonEditar.addActionListener( e-> {
-			if(valorId == 0) {
+			if(plantaSeleccionada==false) {
 				JOptionPane.showMessageDialog(panel,"Seleccione una planta", "Error", JOptionPane.ERROR_MESSAGE);	
 			}
 			else {
@@ -95,9 +99,30 @@ public class PlantaGui {
 			pantallaRutas.pantallaPrincipalRutas(app);
 		});
 
+		botonVerPedidos.addActionListener( e-> {
+			if(plantaSeleccionada==false) {
+				JOptionPane.showMessageDialog(panel,"Seleccione una planta", "Error", JOptionPane.ERROR_MESSAGE);	
+			}
+			else {
+				PedidoGui pantallaPedidos = new PedidoGui();
+				
+				pantallaPedidos.agregarPedido(app,valorId,nombre,this);
+				
+				
+			}
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		app.gbc.gridx = 0;
 		app.gbc.gridy = 0;
-		app.gbc.gridwidth=3;
+		app.gbc.gridwidth=6;
 		app.gbc.gridheight=1;
 		panel.add(tituloPlantas,app.gbc);
 		
@@ -117,11 +142,11 @@ public class PlantaGui {
 		app.gbc.gridy = 1;
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
-		panel.add(boton3,app.gbc);
+		panel.add(botonBuscar,app.gbc);
 			
 		app.gbc.gridx = 0;
 		app.gbc.gridy = 2;
-		app.gbc.gridwidth=6;
+		app.gbc.gridwidth=7;
 		app.gbc.gridheight=1;
 		app.gbc.weightx=0.1;
 		app.gbc.fill=GridBagConstraints.HORIZONTAL;
@@ -137,40 +162,43 @@ public class PlantaGui {
 		app.gbc.fill=GridBagConstraints.NONE;
 		app.gbc.anchor=GridBagConstraints.FIRST_LINE_END;
 		
-		panel.add(boton1,app.gbc);
+		panel.add(botonAgregarPlanta,app.gbc);
 		
 		app.gbc.gridx=1;
 		app.gbc.gridy = 4;
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
 		app.gbc.fill=GridBagConstraints.NONE;
-		
 		panel.add(botonEditar,app.gbc);
-		
 		
 		app.gbc.gridx=2;
 		app.gbc.gridy = 4;
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
 		app.gbc.fill=GridBagConstraints.NONE;
-		panel.add(boton2,app.gbc);
+		panel.add(botonEliminarPlanta,app.gbc);
 		
 		app.gbc.gridx=3;
 		app.gbc.gridy = 4;
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
-		app.gbc.fill=GridBagConstraints.NONE;
-
-		panel.add(botonRutas,app.gbc);
+		panel.add(botonVerStock, app.gbc);
+		
 		
 		app.gbc.gridx=4;
 		app.gbc.gridy = 4;
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
-		panel.add(botonInsumos, app.gbc);
+		panel.add(botonVerPedidos, app.gbc);
 		
+		
+		app.gbc.gridx=5;
+		app.gbc.gridy = 4;
+		app.gbc.gridwidth=1;
+		app.gbc.gridheight=1;
+		app.gbc.fill=GridBagConstraints.NONE;
+		panel.add(botonRutas,app.gbc);
 
-		
 		app.resetGbc();
 		app.setVerPlantasFalse();
 		app.setVerCamionesTrue();
@@ -406,14 +434,7 @@ public class PlantaGui {
 	
 	private JTable dibujarTablaPlantas() {
 		
-		class MiModelo extends DefaultTableModel	{
-			private static final long serialVersionUID = 1L;
 
-		public boolean isCellEditable (int row, int column) {
-		       return false;
-		   }
-		}
-		
 		MiModelo modelo = new MiModelo();	
 		
 		modelo.addColumn("ID Planta");
