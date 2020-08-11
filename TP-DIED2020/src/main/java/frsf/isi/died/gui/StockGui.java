@@ -20,6 +20,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import frsf.isi.died.app.App;
+import frsf.isi.died.controller.InsumoLiquidoController;
 import frsf.isi.died.controller.StockController;
 import frsf.isi.died.dao.InsumoGeneralDao;
 import frsf.isi.died.dao.InsumoGeneralDaoPostgreSql;
@@ -32,14 +33,23 @@ import frsf.isi.died.dao.RutaDaoPostgreSql;
 import frsf.isi.died.dao.StockDao;
 import frsf.isi.died.dao.StockDaoPostgreSql;
 import frsf.isi.died.dominio.Insumo;
+import frsf.isi.died.dominio.Planta;
 import frsf.isi.died.dominio.Ruta;
 import frsf.isi.died.dominio.Stock;
+import frsf.isi.died.exceptions.CampoVacioException;
+import frsf.isi.died.exceptions.FormatoNumericoException;
 import frsf.isi.died.exceptions.IdUtilizadoException;
+import frsf.isi.died.exceptions.LongitudException;
 import frsf.isi.died.gui.util.MiModelo;
 
 public class StockGui {
 
 	Boolean stockSeleccionado=false;
+	 Integer idRegistroStock;
+	 Integer idInsumoAsociado;
+	 Integer cantidad;
+	 Integer puntoDePedido;
+	
 	
 	public void pantallaPrincipalStock(App app,Integer idPlanta) {
 		app.activarMenu();
@@ -69,32 +79,27 @@ public class StockGui {
 		         int columna = tablaStock.columnAtPoint(e.getPoint());
 		         if ((fila > -1) && (columna > -1)) {
 		        	stockSeleccionado=true;
-//		            valorId = (Integer) tablaPlantas.getValueAt(fila,0);
-//		         	nombre = (String) tablaPlantas.getValueAt(fila, 1);
-//		         	direccion = (String) tablaPlantas.getValueAt(fila, 2);
-//		         	telefono = (Integer) tablaPlantas.getValueAt(fila,3);
+		        	idRegistroStock = (Integer) tablaStock.getValueAt(fila,0);
+		       	    idInsumoAsociado= (Integer) tablaStock.getValueAt(fila,1);
+		       	    cantidad= (Integer) tablaStock.getValueAt(fila,3);
+		       	    puntoDePedido= (Integer) tablaStock.getValueAt(fila,4);
 		         }
 		      }
 		   });
-		
 	
 		botonAgregarStock.addActionListener( e-> {
 			pantallaAgregarStock(app,idPlanta);
 		});
 		
-		
 		botonEditar.addActionListener( e-> {
 			if(stockSeleccionado==false) {
-				JOptionPane.showMessageDialog(panel,"Seleccione una planta", "Error", JOptionPane.ERROR_MESSAGE);	
+				JOptionPane.showMessageDialog(panel,"Seleccione un stock", "Error", JOptionPane.ERROR_MESSAGE);	
 			}
 			else {
-//				pantallaModificarPlanta(app,valorId,nombre,direccion,telefono);
+//				pantallaModificarStock(app,valorId,nombre,direccion,telefono);
 			}
 		});
 		
-
-		
-
 		app.gbc.gridx = 0;
 		app.gbc.gridy = 0;
 		app.gbc.gridwidth=6;
@@ -139,10 +144,10 @@ public class StockGui {
 		
 		panel.add(botonAgregarStock,app.gbc);
 		
-		app.gbc.gridx=1;
+		app.gbc.gridx = 1;
 		app.gbc.gridy = 4;
-		app.gbc.gridwidth=1;
-		app.gbc.gridheight=1;
+		app.gbc.gridwidth = 1;
+		app.gbc.gridheight = 1;
 		app.gbc.fill=GridBagConstraints.NONE;
 		panel.add(botonEditar,app.gbc);
 		
@@ -152,7 +157,6 @@ public class StockGui {
 		app.gbc.gridheight=1;
 		app.gbc.fill=GridBagConstraints.NONE;
 		panel.add(botonEliminarStock,app.gbc);
-		
 
 		app.resetGbc();
 		app.setVerPlantasFalse();
@@ -160,7 +164,112 @@ public class StockGui {
 		app.setContentPane(panel);
 		app.revalidate();
 		app.repaint();
+	}
+	
+//	Integer idRegistroStock;
+//	 Integer idInsumoAsociado;
+//	 Integer cantidad;
+//	 Integer puntoDePedido;
+	public void pantallaModificarStock(App app,Integer valorId, Integer IdInsumo, Integer cant, Integer puntoP, Integer idPlantaAsociada) {
+		app.desactivarMenu();
 		
+		JPanel panel=new JPanel(new GridBagLayout());
+		JLabel etiquetaId = new JLabel("ID: ");
+		//JLabel etiquetaDescripcion=new JLabel("ID Registro: ");
+		JLabel etiquetaIdInsumo=new JLabel("ID Insumo: ");
+		JLabel etiquetaCantidad=new JLabel("Cantidad: ");
+		JLabel etiquetaPuntoPedido=new JLabel("Punto Pedido: ");
+		JTextField ingresarId = new JTextField(valorId.toString());
+		ingresarId.setEditable(false);
+		//JTextField ingresarIdRegistro=new JTextField(idRegistroStock);
+		JTextField ingresarIdInsumo = new JTextField(IdInsumo);
+		JTextField ingresarCantidad = new JTextField(cant);
+		JTextField ingresarPuntoP = new JTextField(puntoP);
+		JButton cancelar = new JButton("Cancelar");
+		JButton agregar = new JButton("Modificar");
+		
+		
+		
+		cancelar.addActionListener( e -> {
+			this.pantallaPrincipalStock(app, idPlantaAsociada);
+		});
+		
+		agregar.addActionListener( e -> {
+	
+			
+			String idInsumo = ingresarIdInsumo.getText();
+			String iCantidad = ingresarCantidad.getText();
+			String iPuntoPedido= ingresarPuntoP.getText();
+			
+			StockController sc = new StockController();
+			sc.modificarStock(valorId.toString(), idInsumo, iCantidad, iPuntoPedido, idPlantaAsociada);
+			JOptionPane.showMessageDialog(panel,"El stock fue modificado correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+			this.pantallaPrincipalStock(app, idPlantaAsociada);
+			
+			this.pantallaPrincipalStock(app, idPlantaAsociada);
+		});
+		
+		
+		
+		app.gbc.gridx=0;
+		app.gbc.gridy=0;
+		app.gbc.gridwidth=1;
+		app.gbc.gridheight=1;
+		panel.add(etiquetaId,app.gbc);
+		
+		app.gbc.gridx=1;
+		app.gbc.gridwidth=3;
+		app.gbc.fill=GridBagConstraints.HORIZONTAL;
+		panel.add(ingresarId,app.gbc);
+		
+		app.gbc.gridx=0;
+		app.gbc.gridy=1;
+		app.gbc.gridwidth=1;
+		app.gbc.gridheight=1;
+		app.gbc.fill=GridBagConstraints.NONE;
+		panel.add(etiquetaIdInsumo,app.gbc);
+		
+		app.gbc.gridx=1;
+		app.gbc.gridwidth=3;
+		app.gbc.fill=GridBagConstraints.HORIZONTAL;
+		panel.add(ingresarIdInsumo,app.gbc);
+		
+		app.gbc.gridx=0;
+		app.gbc.gridy=2;
+		app.gbc.gridwidth=1;
+		app.gbc.fill=GridBagConstraints.NONE;
+		panel.add(etiquetaCantidad,app.gbc);
+		
+		app.gbc.gridx=1;
+		app.gbc.gridwidth=3;
+		app.gbc.fill=GridBagConstraints.HORIZONTAL;
+		panel.add(ingresarCantidad,app.gbc);
+		
+		app.gbc.gridx=0;
+		app.gbc.gridy=3;
+		app.gbc.gridwidth=1;
+		app.gbc.fill=GridBagConstraints.NONE;
+		panel.add(etiquetaPuntoPedido,app.gbc);
+		
+		app.gbc.gridx=1;
+		app.gbc.gridwidth=3;
+		app.gbc.fill=GridBagConstraints.HORIZONTAL;
+		panel.add(ingresarPuntoP,app.gbc);
+		
+		app.gbc.gridx=2;
+		app.gbc.gridy=5;
+		app.gbc.gridwidth=1;
+		app.gbc.gridheight=1;
+		app.gbc.fill=GridBagConstraints.NONE;
+		panel.add(cancelar,app.gbc);
+		
+		app.gbc.gridx=3;
+		panel.add(agregar,app.gbc);
+		
+		
+		app.setContentPane(panel);
+		app.revalidate();
+		app.repaint();
 		
 	}
 	
@@ -292,10 +401,6 @@ public class StockGui {
 
 		
 	}
-	
-	
-	
-	
 	
 	private JTable dibujarTablaStock(Integer idPlanta) {
 		

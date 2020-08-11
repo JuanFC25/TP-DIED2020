@@ -2,6 +2,8 @@ package frsf.isi.died.services;
 
 import java.util.List;
 
+import frsf.isi.died.dao.InsumoLiquidoDao;
+import frsf.isi.died.dao.InsumoLiquidoDaoPostgreSql;
 import frsf.isi.died.dao.RutaDao;
 import frsf.isi.died.dao.StockDao;
 import frsf.isi.died.dao.StockDaoPostgreSql;
@@ -12,7 +14,6 @@ import frsf.isi.died.exceptions.IdUtilizadoException;
 public class StockService {
 
 	public void agregarStock(Stock s) throws IdUtilizadoException {
-		
 		StockDao sd=new StockDaoPostgreSql();
 		verificarIdUnico(s, sd);
 		sd.save(s);
@@ -20,10 +21,16 @@ public class StockService {
 	
 	private void verificarIdUnico(Stock s,StockDao sd) throws IdUtilizadoException {
 		Integer id=s.getIdRegistroStock();
-
 		List<Integer> listaIds = sd.obtenerIds();
 		for(Integer unId : listaIds) {
 			if(unId.equals(id)) throw new IdUtilizadoException();
 		}
+	}
+
+	public void modificarStock(Stock nuevoStock) {
+		
+		StockDao sd = new StockDaoPostgreSql();
+		sd.update(nuevoStock);
+		
 	}
 }
