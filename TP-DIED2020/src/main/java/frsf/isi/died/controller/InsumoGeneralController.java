@@ -2,10 +2,12 @@ package frsf.isi.died.controller;
 
 import frsf.isi.died.dominio.Insumo;
 import frsf.isi.died.dominio.InsumoGeneral;
+import frsf.isi.died.dominio.InsumoLiquido;
 import frsf.isi.died.exceptions.CampoVacioException;
 import frsf.isi.died.exceptions.FormatoNumericoException;
 import frsf.isi.died.exceptions.LongitudException;
 import frsf.isi.died.services.InsumoGeneralService;
+import frsf.isi.died.services.InsumoLiquidoService;
 
 public class InsumoGeneralController {
 
@@ -69,6 +71,22 @@ public class InsumoGeneralController {
 		} catch (NumberFormatException e) {
 			 throw new FormatoNumericoException("COSTO");
 		}
+	}
+
+	public void modificarInsumoGeneral(String id, String desc, String unidadM, String costoXinsumo, String peso)
+			throws LongitudException, CampoVacioException, FormatoNumericoException{
+		verificarId(id);
+		verificarPeso(peso);
+		verificarCostoXInsumo(costoXinsumo);
+		InsumoGeneral ig = new InsumoGeneral(
+				Integer.parseInt(id)
+				,desc, unidadM,
+				Double.parseDouble(costoXinsumo),
+				Double.parseDouble(peso));
+		
+		InsumoGeneralService igs = new InsumoGeneralService();
+		igs.modificarInsumoGeneral(ig);
+		
 	}
 	
 	//private void verificarUnidad(unidad) {};

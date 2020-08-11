@@ -22,6 +22,7 @@ import javax.swing.table.TableRowSorter;
 
 import frsf.isi.died.app.App;
 import frsf.isi.died.controller.InsumoGeneralController;
+import frsf.isi.died.controller.InsumoLiquidoController;
 import frsf.isi.died.controller.PlantaController;
 import frsf.isi.died.dao.InsumoGeneralDao;
 import frsf.isi.died.dao.InsumoGeneralDaoPostgreSql;
@@ -37,16 +38,13 @@ import frsf.isi.died.exceptions.IdUtilizadoException;
 import frsf.isi.died.exceptions.LongitudException;
 
 public class InsumoGeneralGui {
-//
-//	Integer valorId,telefono;
-//	String nombre,direccion;
-	
+
 	Integer IDInsumo;
 	Double costoUnidadMedida;
-	UnidadDeMedida unidadDeMedida;
+	String unidadDeMedida;
 	String descripcion;
-	Double pesoPorUnidadDouble;
-	
+	Double pesoPorUnidad;
+	Integer valorId;
 	
 	
 	public void pantallaPrincipalInsumoGeneral(App app) {
@@ -62,7 +60,7 @@ public class InsumoGeneralGui {
 		JButton boton3 = new JButton ("Buscar");
 		JButton boton1 = new JButton("Agregar Insumo General");
 		JButton botonEditar = new JButton("Editar");
-		//valorId=0;
+		valorId=0;
 		
 		
 		JTable tablaInsumosGenerales=this.dibujarTablaInsumosGenerales();
@@ -73,29 +71,29 @@ public class InsumoGeneralGui {
 		      {
 		         int fila = tablaInsumosGenerales.rowAtPoint(e.getPoint());
 		         int columna = tablaInsumosGenerales.columnAtPoint(e.getPoint());
-		         if ((fila > -1) && (columna > -1))
-//		            valorId = (Integer) tablaInsumosGenerales.getValueAt(fila,0);
-//		         	nombre = (String) tablaInsumosGenerales.getValueAt(fila, 1);
-//		         	direccion = (String) tablaInsumosGenerales.getValueAt(fila, 2);
-//		         	telefono = (Integer) tablaInsumosGenerales.getValueAt(fila,3);
-		        	IDInsumo = (Integer) tablaInsumosGenerales.getValueAt(fila, 0);
+		         if ((fila > -1) && (columna > -1)) {
+		             valorId = (Integer) tablaInsumosGenerales.getValueAt(fila, 0);
+		         descripcion = (String) tablaInsumosGenerales.getValueAt(fila, 1);
+		         unidadDeMedida = (String) tablaInsumosGenerales.getValueAt(fila, 2);
+		         costoUnidadMedida = (Double) tablaInsumosGenerales.getValueAt(fila, 3);
+		         pesoPorUnidad = (Double) tablaInsumosGenerales.getValueAt(fila, 4);
 		        	
 		      }
-		   });
+		   }});
 		
 	
 		boton1.addActionListener( e-> {
 			pantallaAgregarInsumoGeneral(app);
 		});
 		
-//		botonEditar.addActionListener( e-> {
-//			if(valorId == 0) {
-//				JOptionPane.showMessageDialog(panel,"Seleccione una planta", "Error", JOptionPane.ERROR_MESSAGE);	
-//			}
-//			else {
-//				pantallaModificarPlanta(app,valorId,nombre,direccion,telefono);
-//			}
-//		});
+		botonEditar.addActionListener( e-> {
+			if(valorId == 0) {
+				JOptionPane.showMessageDialog(panel,"Seleccione un insumo", "Error", JOptionPane.ERROR_MESSAGE);	
+			}
+			else {
+				pantallaModificarInsumoGeneral(app, valorId, descripcion, unidadDeMedida,costoUnidadMedida, pesoPorUnidad);
+			}
+		});
 		
 
 		app.gbc.gridx = 0;
@@ -304,119 +302,132 @@ public class InsumoGeneralGui {
 	}
 	
 	
-	public void pantallaModificarPlanta(App app,Integer valorId,String nombre,String direccion,Integer telefono) {
-		app.desactivarMenu();
-		
-		JPanel panel=new JPanel(new GridBagLayout());
-		JLabel etiquetaId = new JLabel("ID: ");
-		JLabel etiquetaNombrePlanta=new JLabel("Nombre planta: ");
-		JLabel etiquetaDireccion=new JLabel("Direccion: ");
-		JLabel etiquetaTelefono=new JLabel("Telefono: ");
-		JTextField ingresarId = new JTextField(valorId.toString());
-		ingresarId.setEditable(false);
-		JTextField ingresarNombrePlanta=new JTextField(nombre);
-		JTextField ingresarDireccion=new JTextField(direccion);
-		JTextField ingresarTelefono = new JTextField(telefono.toString());
-		JButton cancelar = new JButton("Cancelar");
-		JButton agregar = new JButton("Modificar");
-		
-		
-		
-		cancelar.addActionListener( e -> {
-			this.pantallaPrincipalInsumoGeneral(app);
-		});
-		
-		agregar.addActionListener( e -> {
-	
+	public void pantallaModificarInsumoGeneral(App app,Integer valorId,String desc,String unidadMedida,Double costoU,Double peso) {
+			app.desactivarMenu();
 			
-			String planta = ingresarNombrePlanta.getText();
-			String direc = ingresarDireccion.getText();
-			String tel= ingresarTelefono.getText();
-	
-			PlantaController pc = new PlantaController();
-		
-			try {
-				pc.modificarPlanta(valorId, planta, direc, tel);
-				JOptionPane.showMessageDialog(panel,"La planta fue modificada correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+			JPanel panel=new JPanel(new GridBagLayout());
+			JLabel etiquetaId = new JLabel("ID: ");
+			JLabel etiquetaDescripcion=new JLabel("Descripcion: ");
+			JLabel etiquetaUnidadMedida=new JLabel("Unidad de medida: ");
+			JLabel etiquetaCostoUnidad=new JLabel("Costo Unidad: ");
+			JLabel etiquetaPeso=new JLabel("Peso: ");
+			JTextField ingresarId = new JTextField(valorId.toString());
+			ingresarId.setEditable(false);
+			JTextField ingresarDescripcion=new JTextField(desc);
+			JTextField ingresarUnidad=new JTextField(unidadMedida);
+			JTextField ingresarCostoUnidad = new JTextField(costoU.toString());
+			JTextField ingresarPeso = new JTextField(peso.toString());
+			JButton cancelar = new JButton("Cancelar");
+			JButton agregar = new JButton("Modificar");
+			
+			
+			
+			cancelar.addActionListener( e -> {
 				this.pantallaPrincipalInsumoGeneral(app);
-			} catch (CampoVacioException e1) {
-				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-				e1.printStackTrace();
-			} catch (LongitudException e1) {
-				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-				e1.printStackTrace();
-			} catch (FormatoNumericoException e1) {
-				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-				e1.printStackTrace();
-			}
+			});
 			
-			this.pantallaPrincipalInsumoGeneral(app);
-		});
+			agregar.addActionListener( e -> {
 		
-		
-		
-		app.gbc.gridx=0;
-		app.gbc.gridy=0;
-		app.gbc.gridwidth=1;
-		app.gbc.gridheight=1;
-		panel.add(etiquetaId,app.gbc);
-		
-		app.gbc.gridx=1;
-		app.gbc.gridwidth=3;
-		app.gbc.fill=GridBagConstraints.HORIZONTAL;
-		panel.add(ingresarId,app.gbc);
-		
-		app.gbc.gridx=0;
-		app.gbc.gridy=1;
-		app.gbc.gridwidth=1;
-		app.gbc.gridheight=1;
-		app.gbc.fill=GridBagConstraints.NONE;
-		panel.add(etiquetaNombrePlanta,app.gbc);
-		
-		app.gbc.gridx=1;
-		app.gbc.gridwidth=3;
-		app.gbc.fill=GridBagConstraints.HORIZONTAL;
-		panel.add(ingresarNombrePlanta,app.gbc);
-		
-		app.gbc.gridx=0;
-		app.gbc.gridy=2;
-		app.gbc.gridwidth=1;
-		app.gbc.fill=GridBagConstraints.NONE;
-		panel.add(etiquetaDireccion,app.gbc);
-		
-		app.gbc.gridx=1;
-		app.gbc.gridwidth=3;
-		app.gbc.fill=GridBagConstraints.HORIZONTAL;
-		panel.add(ingresarDireccion,app.gbc);
-		
-		app.gbc.gridx=0;
-		app.gbc.gridy=3;
-		app.gbc.gridwidth=1;
-		app.gbc.fill=GridBagConstraints.NONE;
-		panel.add(etiquetaTelefono,app.gbc);
-		
-		app.gbc.gridx=1;
-		app.gbc.gridwidth=3;
-		app.gbc.fill=GridBagConstraints.HORIZONTAL;
-		panel.add(ingresarTelefono,app.gbc);
-		
-		
-		app.gbc.gridx=2;
-		app.gbc.gridy=4;
-		app.gbc.gridwidth=1;
-		app.gbc.gridheight=1;
-		app.gbc.fill=GridBagConstraints.NONE;
-		panel.add(cancelar,app.gbc);
-		
-		app.gbc.gridx=3;
-		panel.add(agregar,app.gbc);
-		
-		
-		app.setContentPane(panel);
-		app.revalidate();
-		app.repaint();
-		
+				
+				String iDesc = ingresarDescripcion.getText();
+				String iUnidad = ingresarUnidad.getText();
+				String iCostoU= ingresarCostoUnidad.getText();
+				String iPeso= ingresarPeso.getText();
+				
+				InsumoGeneralController igc = new InsumoGeneralController();
+				try {
+					igc.modificarInsumoGeneral(valorId.toString(), iDesc, iUnidad, iCostoU, iPeso);
+					JOptionPane.showMessageDialog(panel,"El insumo general fue modificado correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+					this.pantallaPrincipalInsumoGeneral(app);
+				} catch (CampoVacioException e1) {
+					JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
+				} catch (LongitudException e1) {
+					JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
+				} catch (FormatoNumericoException e1) {
+					JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
+				}
+				
+				this.pantallaPrincipalInsumoGeneral(app);
+			});
+			
+			
+			
+			app.gbc.gridx=0;
+			app.gbc.gridy=0;
+			app.gbc.gridwidth=1;
+			app.gbc.gridheight=1;
+			panel.add(etiquetaId,app.gbc);
+			
+			app.gbc.gridx=1;
+			app.gbc.gridwidth=3;
+			app.gbc.fill=GridBagConstraints.HORIZONTAL;
+			panel.add(ingresarId,app.gbc);
+			
+			app.gbc.gridx=0;
+			app.gbc.gridy=1;
+			app.gbc.gridwidth=1;
+			app.gbc.gridheight=1;
+			app.gbc.fill=GridBagConstraints.NONE;
+			panel.add(etiquetaDescripcion,app.gbc);
+			
+			app.gbc.gridx=1;
+			app.gbc.gridwidth=3;
+			app.gbc.fill=GridBagConstraints.HORIZONTAL;
+			panel.add(ingresarDescripcion,app.gbc);
+			
+			app.gbc.gridx=0;
+			app.gbc.gridy=2;
+			app.gbc.gridwidth=1;
+			app.gbc.fill=GridBagConstraints.NONE;
+			panel.add(etiquetaUnidadMedida,app.gbc);
+			
+			app.gbc.gridx=1;
+			app.gbc.gridwidth=3;
+			app.gbc.fill=GridBagConstraints.HORIZONTAL;
+			panel.add(ingresarUnidad,app.gbc);
+			
+			app.gbc.gridx=0;
+			app.gbc.gridy=3;
+			app.gbc.gridwidth=1;
+			app.gbc.fill=GridBagConstraints.NONE;
+			panel.add(etiquetaCostoUnidad,app.gbc);
+			
+			app.gbc.gridx=1;
+			app.gbc.gridwidth=3;
+			app.gbc.fill=GridBagConstraints.HORIZONTAL;
+			panel.add(ingresarCostoUnidad,app.gbc);
+			
+			app.gbc.gridx=0;
+			app.gbc.gridy=4;
+			app.gbc.gridwidth=1;
+			app.gbc.fill=GridBagConstraints.NONE;
+			panel.add(etiquetaPeso,app.gbc);
+			
+			app.gbc.gridx=1;
+			app.gbc.gridwidth=3;
+			app.gbc.fill=GridBagConstraints.HORIZONTAL;
+			panel.add(ingresarPeso,app.gbc);
+			
+			
+			app.gbc.gridx=2;
+			app.gbc.gridy=5;
+			app.gbc.gridwidth=1;
+			app.gbc.gridheight=1;
+			app.gbc.fill=GridBagConstraints.NONE;
+			panel.add(cancelar,app.gbc);
+			
+			app.gbc.gridx=3;
+			panel.add(agregar,app.gbc);
+			
+			
+			app.setContentPane(panel);
+			app.revalidate();
+			app.repaint();
 	}
+
 	
 	
 	

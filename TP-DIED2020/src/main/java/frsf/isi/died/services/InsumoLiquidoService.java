@@ -6,6 +6,7 @@ import frsf.isi.died.dao.InsumoLiquidoDao;
 import frsf.isi.died.dao.InsumoLiquidoDaoPostgreSql;
 import frsf.isi.died.dao.PlantaDao;
 import frsf.isi.died.dominio.Insumo;
+import frsf.isi.died.dominio.InsumoLiquido;
 import frsf.isi.died.dominio.Planta;
 import frsf.isi.died.exceptions.IdUtilizadoException;
 
@@ -29,5 +30,12 @@ public class InsumoLiquidoService {
 		for(Integer unId : listaIds) {
 			if(unId.equals(id)) throw new IdUtilizadoException();
 		}
+	}
+
+
+	public void modificarInsumoLiquido(InsumoLiquido il) {
+		InsumoLiquidoDao ild = new InsumoLiquidoDaoPostgreSql();
+		ild.update(il);
+		
 	}
 }

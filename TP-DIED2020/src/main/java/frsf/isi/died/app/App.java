@@ -37,7 +37,6 @@ import frsf.isi.died.gui.PedidoGui;
 import frsf.isi.died.gui.PlantaGui;
 
 public class App extends JFrame{
-
 	
 	public GridBagConstraints gbc;
 	private JMenu menuPlantas;
@@ -81,10 +80,7 @@ public class App extends JFrame{
 		pantallaPlantas.pantallaPrincipalPlantas(this);
 		
 		verPlantas.addActionListener(e->{
-		
 			pantallaPlantas.pantallaPrincipalPlantas(this);
-			
-			
 			this.revalidate();
 			this.repaint();
 		});
