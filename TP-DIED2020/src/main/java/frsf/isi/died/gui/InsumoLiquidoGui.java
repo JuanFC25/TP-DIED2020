@@ -38,11 +38,11 @@ public class InsumoLiquidoGui {
 
 	Integer IDInsumo;
 	Double costoUnidadMedida;
-	UnidadDeMedida unidadDeMedida;
+	String unidadDeMedida;
 	String descripcion;
 	Double pesoPorUnidadDouble;
-	
-	
+	Double densidad;
+	Integer valorId;
 	
 	public void pantallaPrincipalInsumoLiquido(App app) {
 		
@@ -57,7 +57,7 @@ public class InsumoLiquidoGui {
 		JButton boton3 = new JButton ("Buscar");
 		JButton boton1 = new JButton("Agregar Insumo Liquido");
 		JButton botonEditar = new JButton("Editar");
-		//valorId=0;
+		valorId = 0;
 		
 		
 		JTable tablaInsumosLiquidos=this.dibujarTablaInsumosLiquidos();
@@ -68,29 +68,30 @@ public class InsumoLiquidoGui {
 		      {
 		         int fila = tablaInsumosLiquidos.rowAtPoint(e.getPoint());
 		         int columna = tablaInsumosLiquidos.columnAtPoint(e.getPoint());
-		         if ((fila > -1) && (columna > -1))
-//		            valorId = (Integer) tablaInsumosGenerales.getValueAt(fila,0);
-//		         	nombre = (String) tablaInsumosGenerales.getValueAt(fila, 1);
-//		         	direccion = (String) tablaInsumosGenerales.getValueAt(fila, 2);
-//		         	telefono = (Integer) tablaInsumosGenerales.getValueAt(fila,3);
-		        	IDInsumo = (Integer) tablaInsumosLiquidos.getValueAt(fila, 0);
-		        	
+			         if ((fila > -1) && (columna > -1)) {
+			         valorId = (Integer) tablaInsumosLiquidos.getValueAt(fila, 0);
+			         descripcion = (String) tablaInsumosLiquidos.getValueAt(fila, 1);
+			         unidadDeMedida = (String) tablaInsumosLiquidos.getValueAt(fila, 2);
+			         costoUnidadMedida = (Double) tablaInsumosLiquidos.getValueAt(fila, 3);
+			         densidad = (Double) tablaInsumosLiquidos.getValueAt(fila, 4);
+			         }
+		         }
 		      }
-		   });
+		   );
 		
 	
 		boton1.addActionListener( e-> {
 			pantallaAgregarInsumoGeneral(app);
 		});
 		
-//		botonEditar.addActionListener( e-> {
-//			if(valorId == 0) {
-//				JOptionPane.showMessageDialog(panel,"Seleccione una planta", "Error", JOptionPane.ERROR_MESSAGE);	
-//			}
-//			else {
-//				pantallaModificarPlanta(app,valorId,nombre,direccion,telefono);
-//			}
-//		});
+		botonEditar.addActionListener( e-> {
+			if(valorId == 0) {
+				JOptionPane.showMessageDialog(panel,"Seleccione un insumo", "Error", JOptionPane.ERROR_MESSAGE);	
+			}
+			else {
+				pantallaModificarInsumoLiquido(app,valorId,descripcion,unidadDeMedida,costoUnidadMedida,densidad);
+			}
+		});
 		
 
 		app.gbc.gridx = 0;
@@ -297,21 +298,22 @@ public class InsumoLiquidoGui {
 		app.repaint();
 		
 	}
-	
-	
-	public void pantallaModificarPlanta(App app,Integer valorId,String nombre,String direccion,Integer telefono) {
+
+	public void pantallaModificarInsumoLiquido(App app,Integer valorId,String desc,String unidadMedida,Double costoU,Double dens) {
 		app.desactivarMenu();
 		
 		JPanel panel=new JPanel(new GridBagLayout());
 		JLabel etiquetaId = new JLabel("ID: ");
-		JLabel etiquetaNombrePlanta=new JLabel("Nombre planta: ");
-		JLabel etiquetaDireccion=new JLabel("Direccion: ");
-		JLabel etiquetaTelefono=new JLabel("Telefono: ");
+		JLabel etiquetaDescripcion=new JLabel("Descripcion: ");
+		JLabel etiquetaUnidadMedida=new JLabel("Unidad de medida: ");
+		JLabel etiquetaCostoUnidad=new JLabel("Costo Unidad: ");
+		JLabel etiquetaDensidad=new JLabel("Densidad: ");
 		JTextField ingresarId = new JTextField(valorId.toString());
 		ingresarId.setEditable(false);
-		JTextField ingresarNombrePlanta=new JTextField(nombre);
-		JTextField ingresarDireccion=new JTextField(direccion);
-		JTextField ingresarTelefono = new JTextField(telefono.toString());
+		JTextField ingresarDescripcion=new JTextField(desc);
+		JTextField ingresarUnidad=new JTextField(unidadMedida);
+		JTextField ingresarCostoUnidad = new JTextField(costoU.toString());
+		JTextField ingresarDensidad = new JTextField(dens.toString());
 		JButton cancelar = new JButton("Cancelar");
 		JButton agregar = new JButton("Modificar");
 		
@@ -324,15 +326,15 @@ public class InsumoLiquidoGui {
 		agregar.addActionListener( e -> {
 	
 			
-			String planta = ingresarNombrePlanta.getText();
-			String direc = ingresarDireccion.getText();
-			String tel= ingresarTelefono.getText();
-	
-			PlantaController pc = new PlantaController();
-		
+			String iDesc = ingresarDescripcion.getText();
+			String iUnidad = ingresarUnidad.getText();
+			String iCostoU= ingresarCostoUnidad.getText();
+			String iDens= ingresarDensidad.getText();
+			
+			InsumoLiquidoController ilc = new InsumoLiquidoController();
 			try {
-				pc.modificarPlanta(valorId, planta, direc, tel);
-				JOptionPane.showMessageDialog(panel,"La planta fue modificada correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+				ilc.modificarInsumoLiquido(valorId.toString(), iDesc, iUnidad, iCostoU, iDens);
+				JOptionPane.showMessageDialog(panel,"El insumo liquido fue modificado correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 				this.pantallaPrincipalInsumoLiquido(app);
 			} catch (CampoVacioException e1) {
 				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -366,38 +368,49 @@ public class InsumoLiquidoGui {
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
 		app.gbc.fill=GridBagConstraints.NONE;
-		panel.add(etiquetaNombrePlanta,app.gbc);
+		panel.add(etiquetaDescripcion,app.gbc);
 		
 		app.gbc.gridx=1;
 		app.gbc.gridwidth=3;
 		app.gbc.fill=GridBagConstraints.HORIZONTAL;
-		panel.add(ingresarNombrePlanta,app.gbc);
+		panel.add(ingresarDescripcion,app.gbc);
 		
 		app.gbc.gridx=0;
 		app.gbc.gridy=2;
 		app.gbc.gridwidth=1;
 		app.gbc.fill=GridBagConstraints.NONE;
-		panel.add(etiquetaDireccion,app.gbc);
+		panel.add(etiquetaUnidadMedida,app.gbc);
 		
 		app.gbc.gridx=1;
 		app.gbc.gridwidth=3;
 		app.gbc.fill=GridBagConstraints.HORIZONTAL;
-		panel.add(ingresarDireccion,app.gbc);
+		panel.add(ingresarUnidad,app.gbc);
 		
 		app.gbc.gridx=0;
 		app.gbc.gridy=3;
 		app.gbc.gridwidth=1;
 		app.gbc.fill=GridBagConstraints.NONE;
-		panel.add(etiquetaTelefono,app.gbc);
+		panel.add(etiquetaCostoUnidad,app.gbc);
 		
 		app.gbc.gridx=1;
 		app.gbc.gridwidth=3;
 		app.gbc.fill=GridBagConstraints.HORIZONTAL;
-		panel.add(ingresarTelefono,app.gbc);
+		panel.add(ingresarCostoUnidad,app.gbc);
+		
+		app.gbc.gridx=0;
+		app.gbc.gridy=4;
+		app.gbc.gridwidth=1;
+		app.gbc.fill=GridBagConstraints.NONE;
+		panel.add(etiquetaDensidad,app.gbc);
+		
+		app.gbc.gridx=1;
+		app.gbc.gridwidth=3;
+		app.gbc.fill=GridBagConstraints.HORIZONTAL;
+		panel.add(ingresarDensidad,app.gbc);
 		
 		
 		app.gbc.gridx=2;
-		app.gbc.gridy=4;
+		app.gbc.gridy=5;
 		app.gbc.gridwidth=1;
 		app.gbc.gridheight=1;
 		app.gbc.fill=GridBagConstraints.NONE;
@@ -412,8 +425,6 @@ public class InsumoLiquidoGui {
 		app.repaint();
 		
 	}
-	
-	
 	
 	private JTable dibujarTablaInsumosLiquidos() {
 		
@@ -462,5 +473,6 @@ public class InsumoLiquidoGui {
 	
 		return tablaInsumosL;
 	}
+	
 	
 }

@@ -134,12 +134,7 @@ public class PlantaGui {
 				StockGui pantallaStock = new StockGui();
 				pantallaStock.pantallaPrincipalStock(app, valorId);
 			}
-		});
-		
-		
-		
-		
-		
+		}); 
 		
 		app.gbc.gridx = 0;
 		app.gbc.gridy = 0;

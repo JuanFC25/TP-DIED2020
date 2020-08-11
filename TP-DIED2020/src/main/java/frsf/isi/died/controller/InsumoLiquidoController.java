@@ -3,12 +3,14 @@ package frsf.isi.died.controller;
 import frsf.isi.died.dominio.Insumo;
 import frsf.isi.died.dominio.InsumoGeneral;
 import frsf.isi.died.dominio.InsumoLiquido;
+import frsf.isi.died.dominio.Planta;
 import frsf.isi.died.exceptions.CampoVacioException;
 import frsf.isi.died.exceptions.FormatoNumericoException;
 import frsf.isi.died.exceptions.IdUtilizadoException;
 import frsf.isi.died.exceptions.LongitudException;
 import frsf.isi.died.services.InsumoGeneralService;
 import frsf.isi.died.services.InsumoLiquidoService;
+import frsf.isi.died.services.PlantaService;
 
 public class InsumoLiquidoController {
 	
@@ -72,6 +74,23 @@ public class InsumoLiquidoController {
 		} catch (NumberFormatException e) {
 			 throw new FormatoNumericoException("COSTO");
 		}
+	}
+	
+	public void modificarInsumoLiquido(String id, String descripcion, String unidad, String costoXinsumo, String densidad) 
+			throws LongitudException, CampoVacioException, FormatoNumericoException {
+		
+		verificarId(id);
+		verificarDensidad(densidad);
+		verificarCostoXInsumo(costoXinsumo);
+		InsumoLiquido il = new InsumoLiquido(
+				Integer.parseInt(id)
+				,descripcion, unidad,
+				Double.parseDouble(costoXinsumo),
+				Double.parseDouble(densidad));
+		
+		InsumoLiquidoService ils = new InsumoLiquidoService();
+
+		ils.modificarInsumoLiquido(il);
 	}
 
 
