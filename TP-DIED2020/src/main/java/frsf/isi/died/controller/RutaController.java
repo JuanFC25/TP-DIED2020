@@ -24,7 +24,7 @@ public class RutaController {
 		Ruta r = new Ruta(Integer.parseInt(idRuta),
 				pOrigen.getIdPlanta(),
 				pDestino.getIdPlanta(),
-				Double.parseDouble(distancia),
+				Integer.parseInt(distancia),
 				Integer.parseInt(duracion),
 				Integer.parseInt(peso));
 	
@@ -47,7 +47,7 @@ public class RutaController {
 		Ruta r = new Ruta(idRuta,
 				pOrigen.getIdPlanta(),
 				pDestino.getIdPlanta(),
-				Double.parseDouble(distancia),
+				Integer.parseInt(distancia),
 				Integer.parseInt(duracion),
 				Integer.parseInt(peso));
 	

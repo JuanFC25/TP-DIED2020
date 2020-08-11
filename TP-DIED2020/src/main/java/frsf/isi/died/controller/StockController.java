@@ -13,6 +13,7 @@ public class StockController {
 
 	public void agregarStock(String id, Integer idPlanta, Insumo i, String cantidad, String puntoPedido) throws IdUtilizadoException {
 		
+		
 		Stock s = new Stock(Integer.parseInt(cantidad),
 				Integer.parseInt(id),
 				i.getIdInsumo(),
