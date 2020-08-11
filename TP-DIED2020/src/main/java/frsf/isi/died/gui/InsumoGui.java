@@ -153,8 +153,6 @@ public class InsumoGui {
 		
 		
 		app.resetGbc();
-		app.setVerPlantasFalse();
-		app.setVerCamionesTrue();
 		app.setContentPane(panel);
 		app.revalidate();
 		app.repaint();

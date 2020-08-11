@@ -146,26 +146,9 @@ public class InsumoLiquidoGui {
 		
 		panel.add(botonEditar,app.gbc);
 		
-//		
-//		app.gbc.gridx=2;
-//		app.gbc.gridy = 4;
-//		app.gbc.gridwidth=1;
-//		app.gbc.gridheight=1;
-//		app.gbc.fill=GridBagConstraints.NONE;
-//		
-//		panel.add(boton2,app.gbc);
-//		
-//		app.gbc.gridx=3;
-//		app.gbc.gridy = 4;
-//		app.gbc.gridwidth=1;
-//		app.gbc.gridheight=1;
-//		app.gbc.fill=GridBagConstraints.NONE;
-//		panel.add(botonInsumos, app.gbc);
-		
+
 		
 		app.resetGbc();
-		app.setVerPlantasFalse();
-		app.setVerCamionesTrue();
 		app.setContentPane(panel);
 		app.revalidate();
 		app.repaint();
@@ -174,7 +157,6 @@ public class InsumoLiquidoGui {
 	}
 	
 
-	
 	public void pantallaAgregarInsumoGeneral(App app) {
 		app.desactivarMenu();
 		
@@ -219,21 +201,7 @@ public class InsumoLiquidoGui {
 				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			
-			
-//			try {
-//				pc.agregarPlanta(id, planta, direc, tel);
-//				JOptionPane.showMessageDialog(panel,"La planta fue agregada correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-//				this.pantallaPrincipalInsumoGeneral(app);
-//			} catch (CampoVacioException e1) {
-//				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//			} catch (LongitudException e1) {
-//				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//			} catch (FormatoNumericoException e1) {
-//				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//			} catch (IdUtilizadoException e1) {
-//				JOptionPane.showMessageDialog(panel,e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//			}
-//	
+
 		});
 		
 		app.gbc.gridx=0;

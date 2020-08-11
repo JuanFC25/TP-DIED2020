@@ -92,7 +92,7 @@ public class App extends JFrame{
 			
 			this.revalidate();
 			this.repaint();
-		}); // pantallaPrincipalInsumoGeneral
+		}); 
 		
 
 		verInsumosLiquidos.addActionListener(e->{
@@ -105,7 +105,7 @@ public class App extends JFrame{
 		
 		verCamiones.addActionListener(e-> {
 			
-			//this.remove(panel);
+			
 			pantallaCamiones.pantallaPrincipalCamiones(this);
 			
 			this.revalidate();
@@ -130,19 +130,9 @@ public class App extends JFrame{
 		
 	}
 	
-	
-	public void setVerPlantasTrue() {
-		this.verPlantas.setEnabled(true);
-	}
-	public void setVerPlantasFalse() {
-		this.verPlantas.setEnabled(false);
-	}
-	public void setVerCamionesTrue() {
-		this.verCamiones.setEnabled(true);
-	}
-	public void setVerCamionesFalse() {
-		this.verCamiones.setEnabled(false);
-	}
+
+
+
 	
 	public void resetGbc() {
 		this.gbc.gridx=0;
@@ -155,23 +145,20 @@ public class App extends JFrame{
 	}
 	
 	
-	public void cambiarEstadoVerCamiones() {
-		if(this.verCamiones.isEnabled()==true) {
-			this.verCamiones.setEnabled(false);
-		}
-		else this.verCamiones.setEnabled(true);
-	}
+
 	
 	public void activarMenu() {
 		this.menuCamiones.setEnabled(true);
 		this.menuInsumos.setEnabled(true);
 		this.menuPlantas.setEnabled(true);
+		this.menuInsumos.setEnabled(true);
 	}
 	
 	public void desactivarMenu() {
 		this.menuCamiones.setEnabled(false);
 		this.menuInsumos.setEnabled(false);
 		this.menuPlantas.setEnabled(false);
+		this.menuInsumos.setEnabled(false);
 	}
 	
 	
@@ -183,9 +170,6 @@ public class App extends JFrame{
 		aplicacion.armarApp();
 		aplicacion.setTitle("Gestor Camiones");
 		aplicacion.setVisible(true);
-	
-	
-
 	}
 
 

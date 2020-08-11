@@ -159,8 +159,6 @@ public class StockGui {
 		panel.add(botonEliminarStock,app.gbc);
 
 		app.resetGbc();
-		app.setVerPlantasFalse();
-		app.setVerCamionesTrue();
 		app.setContentPane(panel);
 		app.revalidate();
 		app.repaint();

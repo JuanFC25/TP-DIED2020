@@ -42,7 +42,7 @@ public class PlantaGui {
 	Boolean plantaSeleccionada=false;
 	
 	public void pantallaPrincipalPlantas(App app) {
-		
+		plantaSeleccionada=false;
 		app.activarMenu();
 		
 		JPanel panel=new JPanel(new GridBagLayout());
@@ -216,8 +216,6 @@ public class PlantaGui {
 		panel.add(botonRutas,app.gbc);
 
 		app.resetGbc();
-		app.setVerPlantasFalse();
-		app.setVerCamionesTrue();
 		app.setContentPane(panel);
 		app.revalidate();
 		app.repaint();

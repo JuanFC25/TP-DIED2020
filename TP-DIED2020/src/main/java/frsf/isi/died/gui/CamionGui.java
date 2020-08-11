@@ -202,16 +202,12 @@ public class CamionGui {
 		
 		
 		app.resetGbc();
-		app.setVerCamionesFalse();
-		app.setVerPlantasTrue();
 		app.setContentPane(panel);
 		app.revalidate();
 		app.repaint();
 	}
 	
-	
-	
-	
+
 	private void pantallaAgregarCamion(App app) {
 		app.desactivarMenu();
 		

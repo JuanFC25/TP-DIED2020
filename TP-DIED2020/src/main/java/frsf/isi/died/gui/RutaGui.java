@@ -141,8 +141,6 @@ public class RutaGui {
 	
 
 		app.resetGbc();
-		app.setVerCamionesFalse();
-		app.setVerPlantasTrue();
 		app.setContentPane(panel);
 		app.revalidate();
 		app.repaint();

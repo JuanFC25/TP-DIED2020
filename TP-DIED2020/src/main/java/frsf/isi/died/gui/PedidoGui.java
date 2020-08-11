@@ -47,6 +47,7 @@ import frsf.isi.died.gui.util.MiModelo;
 
 public class PedidoGui {
 	
+	
 	Double precio;
 	List<Item> listaItems;
 	List<Integer> idInsumos;
@@ -54,6 +55,7 @@ public class PedidoGui {
 	Integer idPedido;
 	
 	public void pantallaPrincipalPedido(App app) {
+		app.activarMenu();
 		
 		JPanel panel=new JPanel(new GridBagLayout());
 		
@@ -77,9 +79,7 @@ public class PedidoGui {
 		         if ((fila > -1) && (columna > -1)) {
 		        	pedidoSeleccionado=true;
 		            idPedido = (Integer) tablaPedidos.getValueAt(fila,0);
-//		         	nombre = (String) tablaPlantas.getValueAt(fila, 1);
-//		         	direccion = (String) tablaPlantas.getValueAt(fila, 2);
-//		         	telefono = (Integer) tablaPlantas.getValueAt(fila,3);
+
 		         }
 		      }
 		   });
@@ -134,8 +134,6 @@ public class PedidoGui {
 		
 		
 		app.resetGbc();
-		app.setVerPlantasFalse();
-		app.setVerCamionesTrue();
 		app.setContentPane(panel);
 		app.revalidate();
 		app.repaint();
@@ -150,6 +148,7 @@ public class PedidoGui {
 
 
 	public void agregarPedido(App app, Integer valorId, String nombre,PlantaGui pg) {
+		app.desactivarMenu();
 		
 		listaItems = new ArrayList<Item>();
 		idInsumos = new ArrayList<Integer>();
@@ -366,6 +365,7 @@ public class PedidoGui {
 	
 
 	private void pantallaPlantasPosibles(App app, Integer idPedido) {
+		app.desactivarMenu();
 		
 		JPanel panel=new JPanel(new GridBagLayout());
 		ItemDao id = new ItemDaoPostgreSql();

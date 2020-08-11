@@ -29,6 +29,10 @@ public class StockDaoPostgreSql implements StockDao{
 			"INSERT INTO trabajoPractico.STOCK (idRegistro,cantidad,puntoDePedido,idInsumoAsociado,idPlantaAsociada)"
 			+ " VALUES (?,?,?,?,?)";
 	
+	private static final String UPDATE_STOCK=
+			"UPDATE trabajoPractico.STOCK SET idRegistro = ?,cantidad = ?,puntoDePedido = ?,idInsumoAsociado = ?,idPlantaAsociada = ?"
+			+ " WHERE idRegistro = ?";
+	
 	private static final String DELETE_STOCK =
 			"DELETE FROM trabajoPractico.STOCK WHERE idStock = ?";
 	
@@ -127,6 +131,32 @@ public class StockDaoPostgreSql implements StockDao{
 			}
 		}
 	
+	}
+
+	@Override
+	public void update(Stock nuevoStock) {
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		try {
+			System.out.println("EJECUTA UPDATE");
+			pstmt= conn.prepareStatement(UPDATE_STOCK);
+			pstmt.setInt(1, nuevoStock.getIdRegistroStock());
+			pstmt.setInt(2, nuevoStock.getCantidad());
+			pstmt.setInt(3, nuevoStock.getPuntoDePedido());
+			pstmt.setInt(4, nuevoStock.getIdInsumoAsociado());
+			pstmt.setInt(5, nuevoStock.getIdPlantaAsociada());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+			
 	}
 	
 	
