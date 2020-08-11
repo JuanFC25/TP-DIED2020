@@ -8,4 +8,5 @@ public interface StockDao {
 	public List<Stock> buscarStockPlanta(Integer id);
 	public List<Integer> obtenerIds();
 	public void save(Stock s);
+	public void update(Stock nuevoStock);
 }
