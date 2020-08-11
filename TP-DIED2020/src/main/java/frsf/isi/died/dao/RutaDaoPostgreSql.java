@@ -27,7 +27,7 @@ public class RutaDaoPostgreSql implements RutaDao{
 			"DELETE FROM trabajoPractico.RUTA WHERE idRuta = ?";
 	
 	private static final String UPDATE_RUTA =
-			" UPDATE trabajoPractico.RUTA SET idRuta =? ,idPlantaOrigen = ? , idPlantaDestino =? , distanciaEnKm =?, duracionEnMin =?,cantMaxPermitidaEnKilos=?"
+			" UPDATE trabajoPractico.RUTA SET idRuta = ? ,idPlantaOrigen = ? , idPlantaDestino =? , distanciaEnKm =?, duracionEnMin =?,cantMaxPermitidaEnKilos=?"
 			+ " WHERE idRuta = ?";
 	
 	@Override
@@ -45,7 +45,7 @@ public class RutaDaoPostgreSql implements RutaDao{
 				(rs.getInt("idRuta")),
 				(rs.getInt("idPlantaOrigen")),
 				(rs.getInt("idPlantaDestino")),
-				(rs.getDouble("distanciaEnKm")),
+				(rs.getInt("distanciaEnKm")),
 				(rs.getInt("duracionEnMin")),
 				(rs.getInt("cantMaxPermitidaEnKilos")));
 				

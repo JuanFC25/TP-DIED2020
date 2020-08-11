@@ -5,18 +5,15 @@ package frsf.isi.died.dominio;
 public class Ruta {
 
 	private Integer idRuta;
-	private Double distancia;
+	private Integer distancia;
 	private Integer duracionEstimadaHoras;
 	private Integer pesoMaximo;
 	
 	private Integer IdPlantaOrigen;
 	private Integer IdPlantaDestino;
+
 	
-	
-	
-	
-	
-	public Ruta(Integer idRuta,Integer idPlantaOrigen,Integer idPlantaDestino, Double distancia,
+	public Ruta(Integer idRuta,Integer idPlantaOrigen,Integer idPlantaDestino, Integer distancia,
 			Integer duracionEstimadaHoras, Integer pesoMaximo ) {
 		this.idRuta = idRuta;
 		this.distancia = distancia;
@@ -25,10 +22,10 @@ public class Ruta {
 		IdPlantaOrigen = idPlantaOrigen;
 		IdPlantaDestino = idPlantaDestino;
 	}
-	public Double getDistancia() {
+	public Integer getDistancia() {
 		return distancia;
 	}
-	public void setDistancia(Double distancia) {
+	public void setDistancia(Integer distancia) {
 		this.distancia = distancia;
 	}
 	public Integer getduracionEstimadaHoras() {
